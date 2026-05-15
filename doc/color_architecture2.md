@@ -261,11 +261,11 @@ func_red_text_25     ← 直接顺延编号，无需造词
 ```xml
 <!-- values/colors.xml（日间模式） -->
 <color name="t_white_1">@color/white_1</color>
-<color name="t_red_5">@color/red_5</color>
+<color name="t_red_4">@color/red_4</color>
 
-<!-- values-night/colors.xml（夜间模式） -->
-<color name="t_white_1">@color/black_10</color>  <!-- 背景反转 -->
-<color name="t_red_5">@color/red_4</color>     <!-- 降低饱和度 -->
+<!-- values-night/colors.xml（夜间模式）：只写 @color，色值仅在基础层定义 -->
+<color name="t_white_1">@color/black_8</color>  <!-- 背景反转 -->
+<color name="t_red_4">@color/red_3</color>     <!-- 夜间主红略收敛，与仓库一致 -->
 ```
 
 **功能层完全不用改**，自动跟随主题切换。
@@ -330,9 +330,9 @@ func_red_text_25     ← 直接顺延编号，无需造词
 <View
     android:background="@color/func_black_alpha_1" />
 
-<!-- 玻璃效果背景 -->
+<!-- 浅色半透明（参考仓库可在功能层增加 func_* 指向 t_white_1_alpha20） -->
 <View
-    android:background="@color/func_white_alpha_20" />
+    android:background="@color/t_white_1_alpha20" />
 ```
 
 ---
@@ -491,7 +491,7 @@ func_{色系}_{职能}_{档位}
 
 ---
 
-> 💡 完整代码实现请参考项目中的 colors.xml 文件。
+> 💡 完整代码实现见仓库：[`values/colors.xml`](https://github.com/zealot2002/arch_ui_token_spec/blob/main/app/src/main/res/values/colors.xml)（基础色 + 日间主题 + 功能层）、[`values-night/colors.xml`](https://github.com/zealot2002/arch_ui_token_spec/blob/main/app/src/main/res/values-night/colors.xml)（夜间 `t_*`）。
 >
 > 关注我，获取更多Android架构设计干货。
 >

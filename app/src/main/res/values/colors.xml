@@ -17,6 +17,8 @@
     <color name="black_6">#262626</color>
     <color name="black_7">#1F1F1F</color>
     <color name="black_8">#000000</color>
+    <!-- 介于 black_5 与 black_6 之间，供暗色主题背景阶 t_white_* 映射 -->
+    <color name="black_5a">#454545</color>
 
     <!-- 灰色系：数字越大越深 -->
     <color name="gray_1">#EEEEEE</color>
@@ -38,6 +40,10 @@
     <color name="orange_2">#FFB866</color>
     <color name="orange_3">#FF8C33</color>
     <color name="orange_4">#FF6A00</color>
+    <!-- 夜间等主题映射用（仅基础层定义色值） -->
+    <color name="orange_0">#4D2E1A</color>
+    <color name="orange_2b">#FFAA66</color>
+    <color name="orange_3b">#FF8833</color>
 
     <!-- 黄色系 -->
     <color name="yellow_1">#FCEACC</color>
@@ -76,6 +82,7 @@
     <color name="black_8_alpha55">#8C000000</color>
     <color name="black_8_alpha60">#99000000</color>
     <color name="black_8_alpha65">#A6000000</color>
+    <color name="black_8_alpha80">#CC000000</color>
 
     <!-- 灰色透明度 -->
     <color name="gray_4_alpha30">#4D9E9E9E</color>
@@ -87,10 +94,18 @@
     <color name="red_4_alpha10">#1ADB121F</color>
     <color name="red_4_alpha20">#33DB121F</color>
     <color name="red_4_alpha30">#4DDB121F</color>
+    <color name="red_4_alpha40">#66DB121F</color>
+    <!-- 基于 red_3，供暗色主题下 t_red_4_alpha* 映射 -->
+    <color name="red_3_alpha10">#1AE83F49</color>
+    <color name="red_3_alpha20">#33E83F49</color>
+    <color name="red_3_alpha40">#66E83F49</color>
 
     <color name="blue_4_alpha10">#1A105FB3</color>
     <color name="blue_4_alpha20">#33105FB3</color>
     <color name="blue_4_alpha40">#66105FB3</color>
+    <color name="blue_2_alpha10">#1A6A9BCF</color>
+    <color name="blue_2_alpha20">#336A9BCF</color>
+    <color name="blue_2_alpha40">#666A9BCF</color>
 
     <color name="yellow_4_alpha10">#1ADB9B3A</color>
     <color name="yellow_4_alpha20">#33DB9B3A</color>
@@ -103,6 +118,13 @@
     <color name="green_4_alpha10">#1A0C8F60</color>
     <color name="green_4_alpha20">#330C8F60</color>
     <color name="green_4_alpha40">#660C8F60</color>
+    <color name="green_2_alpha10">#1A64C139</color>
+    <color name="green_2_alpha20">#3364C139</color>
+    <color name="green_2_alpha40">#6664C139</color>
+
+    <color name="orange_3b_alpha10">#1AFF8833</color>
+    <color name="orange_3b_alpha20">#33FF8833</color>
+    <color name="orange_3b_alpha40">#66FF8833</color>
 
     <!-- ========== 主题适配层（日间模式）========== -->
     <!-- 白色系主题 -->
@@ -178,11 +200,12 @@
     <color name="t_black_8_alpha35">@color/black_8_alpha35</color>
     <color name="t_black_8_alpha40">@color/black_8_alpha40</color>
     <color name="t_black_8_alpha55">@color/black_8_alpha55</color>
+    <color name="t_black_8_alpha80">@color/black_8_alpha80</color>
 
     <!-- 彩色主题透明度变体 -->
     <color name="t_red_4_alpha10">@color/red_4_alpha10</color>
     <color name="t_red_4_alpha20">@color/red_4_alpha20</color>
-    <color name="t_red_4_alpha40">@color/red_4_alpha30</color>
+    <color name="t_red_4_alpha40">@color/red_4_alpha40</color>
 
     <color name="t_yellow_4_alpha10">@color/yellow_4_alpha10</color>
     <color name="t_yellow_4_alpha20">@color/yellow_4_alpha20</color>

@@ -102,20 +102,24 @@
 - 彩色系：数字越小饱和度越低
 - 不参与日夜切换，保持绝对稳定
 
-**完整基础色表**：
+**完整基础色表（与仓库实现一致，随项目迭代以 `values/colors.xml` 为准）**：
 
-| 色系 | 数量 | 色值范围 | 示例 |
-|------|------|----------|------|
-| 白色系 | 4 | #FFFFFF ~ #E0E0E0 | white_1 ~ white_4 |
-| 黑色系 | 10 | #F5F5F5 ~ #000000 | black_1 ~ black_10 |
-| 红色系 | 8 | #FFF5F5 ~ #CF1322 | red_1 ~ red_8 |
-| 橙色系 | 8 | #FFF7E8 ~ #FF7D00 | orange_1 ~ orange_8 |
-| 黄色系 | 8 | #FFFBE6 ~ #FAAD14 | yellow_1 ~ yellow_8 |
-| 蓝色系 | 9 | #E6F7FF ~ #0958D9 | blue_1 ~ blue_9 |
-| 绿色系 | 6 | #F6FFED ~ #389E0D | green_1 ~ green_6 |
-| 透明度变体 | 30+ | 基础色 + 10%~90% 透明度 | white_1_alpha10 |
+| 色系 | 档位数 | 命名区间 / 说明 |
+|------|--------|----------------|
+| 白色系 | 4 | `white_1` ~ `white_4` |
+| 黑色系 | 8 | `black_1` ~ `black_8` |
+| 灰色系 | 7 | `gray_1` ~ `gray_7` |
+| 红色系 | 4 | `red_1` ~ `red_4` |
+| 橙色系 | 4 | `orange_1` ~ `orange_4`；并含供多主题映射用的 `orange_0`、`orange_2b`、`orange_3b` |
+| 黄色系 | 4 | `yellow_1` ~ `yellow_4` |
+| 蓝色系 | 4 | `blue_1` ~ `blue_4` |
+| 绿色系 | 4 | `green_1` ~ `green_4` |
+| 补间色 | 按需 | 如 `black_5a`（介于 `black_5` 与 `black_6` 之间的深灰阶，供暗色背景映射） |
+| 透明度变体 | 按需 | `基础色名_alpha{透明度}`，如 `white_1_alpha20`、`black_8_alpha80`、`red_4_alpha40`；彩色半透明亦在基础层定义 |
 
-**透明度命名规则**：`基础色名_alpha透明度`，例如 `white_1_alpha50` 代表 `white_1` 加上50%透明度。
+**透明度命名规则**：`基础色名_alpha透明度`，例如 `white_1_alpha50` 代表 `white_1` 加上约 50% 透明度（以具体 ARGB 为准）。
+
+色系需要扩展时，只在基础层增加新档位；主题层、功能层继续遵守单向依赖。
 
 ### ❌ 反例 vs ✅ 正例
 
@@ -126,10 +130,10 @@
 <color name="primary_red">#DB121F</color>
 <color name="light_gray">#F0F0F0</color>
 
-<!-- ✅ 正确：统一色系_数字命名 -->
+<!-- ✅ 正确：统一色系_数字命名（档位数以项目仓为准，此处与参考仓库一致） -->
 <color name="white_1">#FFFFFF</color>
-<color name="black_10">#000000</color>
-<color name="red_5">#DB121F</color>
+<color name="black_8">#000000</color>
+<color name="red_4">#DB121F</color>
 <color name="black_1">#F0F0F0</color>
 ```
 
@@ -167,11 +171,11 @@
 ```xml
 <!-- values/colors.xml（日间模式） -->
 <color name="t_white_1">@color/white_1</color>
-<color name="t_black_10">@color/black_10</color>
+<color name="t_black_8">@color/black_8</color>
 
-<!-- values-night/colors.xml（夜间模式） -->
-<color name="t_white_1">@color/black_10</color>  <!-- 背景色反转 -->
-<color name="t_black_10">@color/white_1</color>  <!-- 文字色反转 -->
+<!-- values-night/colors.xml（夜间模式）：同样只引用基础层，不写 #RRGGBB -->
+<color name="t_white_1">@color/black_8</color>   <!-- 背景色反转 -->
+<color name="t_black_8">@color/white_1</color>   <!-- 主文字色反转 -->
 ```
 
 **优势**：
@@ -196,7 +200,7 @@
 
 很多人喜欢这样定义功能色：
 ```xml
-<color name="func_text_main">@color/t_black_10</color>
+<color name="func_text_main">@color/t_black_8</color>
 <color name="func_text_sub">@color/t_black_5</color>
 <color name="func_text_aux">@color/t_black_3</color>
 ```
@@ -214,7 +218,7 @@
 
 ```xml
 <!-- 文本色：数字越小越重要、越深 -->
-<color name="func_text_1">@color/t_black_10</color>  <!-- 主标题、商品名称 -->
+<color name="func_text_1">@color/t_black_8</color>  <!-- 主标题、商品名称 -->
 <color name="func_text_2">@color/t_black_7</color>   <!-- 副标题、描述 -->
 <color name="func_text_3">@color/t_black_5</color>   <!-- 辅助信息 -->
 <color name="func_text_4">@color/t_black_3</color>   <!-- 提示、备注 -->
@@ -341,7 +345,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="支付成功"
-    android:textColor="@color/func_state_success" />
+    android:textColor="@color/func_green_text_1" />
 ```
 
 ---
@@ -382,9 +386,8 @@
 
 ---
 
-**参考代码**：
-- [完整基础色定义](https://github.com/example/color-system/blob/master/base_colors.xml)
-- [主题层定义](https://github.com/example/color-system/blob/master/theme_colors.xml)
-- [功能层定义](https://github.com/example/color-system/blob/master/func_colors.xml)
+**参考代码（与本文配套的实现仓库一致）**：
+- [基础色 + 日间 `t_*` 主题层 + `func_*` 通用职能层：`values/colors.xml`](https://github.com/zealot2002/arch_ui_token_spec/blob/main/app/src/main/res/values/colors.xml)
+- [夜间主题层覆写（仅 `t_*`）：`values-night/colors.xml`](https://github.com/zealot2002/arch_ui_token_spec/blob/main/app/src/main/res/values-night/colors.xml)
 
 > 💡 如果你觉得这篇文章对你有帮助，欢迎点赞、收藏、转发。关注我，获取更多Android架构设计干货。

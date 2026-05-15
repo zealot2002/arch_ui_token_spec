@@ -2,102 +2,98 @@
 <resources>
 
     <!-- ========== 主题适配层（夜间模式）========== -->
-    <!--
-        夜间模式只做主题映射，功能色层引用主题层自动切换
-        白色系主题 - 夜间模式下反转（深色背景）
-    -->
-    <color name="t_white_1">#000000</color>
-    <color name="t_white_2">#1F1F1F</color>
-    <color name="t_white_3">#262626</color>
-    <color name="t_white_4">#454545</color>
+    <!-- 仅做基础色代理映射，不写十六进制色值；色值只在 values/colors.xml 基础层定义 -->
+    <!-- 白色系主题：夜间下用作深色背景阶 -->
+    <color name="t_white_1">@color/black_8</color>
+    <color name="t_white_2">@color/black_7</color>
+    <color name="t_white_3">@color/black_6</color>
+    <color name="t_white_4">@color/black_5a</color>
 
-    <!-- 黑色系主题 - 夜间模式下反转（浅色文字） -->
-    <color name="t_black_1">#F5F5F5</color>
-    <color name="t_black_2">#FAFAFA</color>
-    <color name="t_black_3">#FDFDFD</color>
-    <color name="t_black_4">#FFFFFF</color>
-    <color name="t_black_5">#FFFFFF</color>
-    <color name="t_black_6">#FFFFFF</color>
-    <color name="t_black_7">#FFFFFF</color>
-    <color name="t_black_8">#FFFFFF</color>
+    <!-- 黑色系主题：夜间下反转作浅色文字阶 -->
+    <color name="t_black_1">@color/white_4</color>
+    <color name="t_black_2">@color/white_3</color>
+    <color name="t_black_3">@color/white_2</color>
+    <color name="t_black_4">@color/white_1</color>
+    <color name="t_black_5">@color/white_1</color>
+    <color name="t_black_6">@color/white_1</color>
+    <color name="t_black_7">@color/white_1</color>
+    <color name="t_black_8">@color/white_1</color>
 
-    <!-- 灰色系主题 - 夜间模式反转明度 -->
-    <color name="t_gray_1">#424242</color>
-    <color name="t_gray_2">#616161</color>
-    <color name="t_gray_3">#757575</color>
-    <color name="t_gray_4">#9E9E9E</color>
-    <color name="t_gray_5">#BDBDBD</color>
-    <color name="t_gray_6">#E0E0E0</color>
-    <color name="t_gray_7">#EEEEEE</color>
+    <!-- 灰色系主题：夜间反转明度 -->
+    <color name="t_gray_1">@color/gray_7</color>
+    <color name="t_gray_2">@color/gray_6</color>
+    <color name="t_gray_3">@color/gray_5</color>
+    <color name="t_gray_4">@color/gray_4</color>
+    <color name="t_gray_5">@color/gray_3</color>
+    <color name="t_gray_6">@color/gray_2</color>
+    <color name="t_gray_7">@color/gray_1</color>
 
-    <!-- 灰色系主题透明度变体 - 夜间模式保持不变 -->
-    <color name="t_gray_4_alpha30">#4D9E9E9E</color>
-    <color name="t_gray_6_alpha15">#26616161</color>
-    <color name="t_gray_6_alpha50">#80616161</color>
-    <color name="t_gray_7_alpha25">#40424242</color>
+    <color name="t_gray_4_alpha30">@color/gray_4_alpha30</color>
+    <color name="t_gray_6_alpha15">@color/gray_6_alpha15</color>
+    <color name="t_gray_6_alpha50">@color/gray_6_alpha50</color>
+    <color name="t_gray_7_alpha25">@color/gray_7_alpha25</color>
 
-    <!-- 红色系主题 - 保持饱和度，降低明度 -->
-    <color name="t_red_1">#F6C6C9</color>
-    <color name="t_red_2">#EE989E</color>
-    <color name="t_red_3">#E83F49</color>
-    <color name="t_red_4">#E83F49</color>
+    <!-- 红色系主题 -->
+    <color name="t_red_1">@color/red_1</color>
+    <color name="t_red_2">@color/red_2</color>
+    <color name="t_red_3">@color/red_3</color>
+    <color name="t_red_4">@color/red_3</color>
 
-    <!-- 橙色系主题 - 夜间模式降低饱和度，更柔和 -->
-    <color name="t_orange_1">#4D2E1A</color>
-    <color name="t_orange_2">#FFAA66</color>
-    <color name="t_orange_3">#FF8833</color>
-    <color name="t_orange_4">#FF8833</color>
+    <!-- 橙色系主题 -->
+    <color name="t_orange_1">@color/orange_0</color>
+    <color name="t_orange_2">@color/orange_2b</color>
+    <color name="t_orange_3">@color/orange_3b</color>
+    <color name="t_orange_4">@color/orange_3b</color>
 
-    <!-- 黄色系主题 - 保持不变 -->
-    <color name="t_yellow_1">#FCEACC</color>
-    <color name="t_yellow_2">#ECCB98</color>
-    <color name="t_yellow_3">#F5AE14</color>
-    <color name="t_yellow_4">#DB9B3A</color>
+    <!-- 黄色系主题 -->
+    <color name="t_yellow_1">@color/yellow_1</color>
+    <color name="t_yellow_2">@color/yellow_2</color>
+    <color name="t_yellow_3">@color/yellow_3</color>
+    <color name="t_yellow_4">@color/yellow_4</color>
 
-    <!-- 蓝色系主题 - 降低饱和度 -->
-    <color name="t_blue_1">#98BADE</color>
-    <color name="t_blue_2">#6A9BCF</color>
-    <color name="t_blue_3">#6A9BCF</color>
-    <color name="t_blue_4">#3B7CC1</color>
+    <!-- 蓝色系主题 -->
+    <color name="t_blue_1">@color/blue_1</color>
+    <color name="t_blue_2">@color/blue_2</color>
+    <color name="t_blue_3">@color/blue_2</color>
+    <color name="t_blue_4">@color/blue_3</color>
 
-    <!-- 绿色系主题 - 降低饱和度 -->
-    <color name="t_green_1">#A8DBA0</color>
-    <color name="t_green_2">#64C139</color>
-    <color name="t_green_3">#64C139</color>
-    <color name="t_green_4">#42B30E</color>
+    <!-- 绿色系主题 -->
+    <color name="t_green_1">@color/green_1</color>
+    <color name="t_green_2">@color/green_2</color>
+    <color name="t_green_3">@color/green_2</color>
+    <color name="t_green_4">@color/green_3</color>
 
-    <!-- 主题透明度变体 - 夜间模式反转 -->
-    <color name="t_white_1_alpha20">#33000000</color>
-    <color name="t_white_1_alpha35">#59000000</color>
-    <color name="t_white_1_alpha60">#99000000</color>
-    <color name="t_white_1_alpha65">#A6000000</color>
-    <color name="t_white_1_alpha80">#CC000000</color>
+    <!-- 主题透明度变体（夜间） -->
+    <color name="t_white_1_alpha20">@color/black_8_alpha20</color>
+    <color name="t_white_1_alpha35">@color/black_8_alpha35</color>
+    <color name="t_white_1_alpha60">@color/black_8_alpha60</color>
+    <color name="t_white_1_alpha65">@color/black_8_alpha65</color>
+    <color name="t_white_1_alpha80">@color/black_8_alpha80</color>
 
-    <color name="t_black_8_alpha10">#1AFFFFFF</color>
-    <color name="t_black_8_alpha20">#33FFFFFF</color>
-    <color name="t_black_8_alpha35">#59FFFFFF</color>
-    <color name="t_black_8_alpha40">#66FFFFFF</color>
-    <color name="t_black_8_alpha55">#8CFFFFFF</color>
+    <color name="t_black_8_alpha10">@color/white_1_alpha10</color>
+    <color name="t_black_8_alpha20">@color/white_1_alpha20</color>
+    <color name="t_black_8_alpha35">@color/white_1_alpha35</color>
+    <color name="t_black_8_alpha40">@color/white_1_alpha40</color>
+    <color name="t_black_8_alpha55">@color/white_1_alpha55</color>
 
-    <!-- 彩色主题透明度变体 - 夜间模式保持不变 -->
-    <color name="t_red_4_alpha10">#1AE83F49</color>
-    <color name="t_red_4_alpha20">#33E83F49</color>
-    <color name="t_red_4_alpha40">#66E83F49</color>
+    <color name="t_red_4_alpha10">@color/red_3_alpha10</color>
+    <color name="t_red_4_alpha20">@color/red_3_alpha20</color>
+    <color name="t_red_4_alpha40">@color/red_3_alpha40</color>
 
-    <color name="t_yellow_4_alpha10">#1ADB9B3A</color>
-    <color name="t_yellow_4_alpha20">#33DB9B3A</color>
-    <color name="t_yellow_4_alpha40">#66DB9B3A</color>
+    <color name="t_yellow_4_alpha10">@color/yellow_4_alpha10</color>
+    <color name="t_yellow_4_alpha20">@color/yellow_4_alpha20</color>
+    <color name="t_yellow_4_alpha40">@color/yellow_4_alpha40</color>
 
-    <color name="t_blue_4_alpha10">#1A6A9BCF</color>
-    <color name="t_blue_4_alpha20">#336A9BCF</color>
-    <color name="t_blue_4_alpha40">#666A9BCF</color>
+    <color name="t_blue_4_alpha10">@color/blue_2_alpha10</color>
+    <color name="t_blue_4_alpha20">@color/blue_2_alpha20</color>
+    <color name="t_blue_4_alpha40">@color/blue_2_alpha40</color>
 
-    <color name="t_green_4_alpha10">#1A64C139</color>
-    <color name="t_green_4_alpha20">#3364C139</color>
-    <color name="t_green_4_alpha40">#6664C139</color>
+    <color name="t_green_4_alpha10">@color/green_2_alpha10</color>
+    <color name="t_green_4_alpha20">@color/green_2_alpha20</color>
+    <color name="t_green_4_alpha40">@color/green_2_alpha40</color>
 
-    <color name="t_orange_4_alpha10">#1AFF8833</color>
-    <color name="t_orange_4_alpha20">#33FF8833</color>
-    <color name="t_orange_4_alpha40">#66FF8833</color>
+    <color name="t_orange_4_alpha10">@color/orange_3b_alpha10</color>
+    <color name="t_orange_4_alpha20">@color/orange_3b_alpha20</color>
+    <color name="t_orange_4_alpha40">@color/orange_3b_alpha40</color>
 
 </resources>

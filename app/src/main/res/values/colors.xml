@@ -370,4 +370,7 @@
     <color name="func_green_shadow_1">@color/t_green_4_alpha10</color>
     <color name="func_green_shadow_2">@color/t_green_4_alpha20</color>
 
+    <!-- Drawable 全透明占位（不映射主题，避免在 shape 中写 # 色值） -->
+    <color name="func_clear_1">@android:color/transparent</color>
+
 </resources>

@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/func_surface_paper_1"
+    android:fitsSystemWindows="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingBottom="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp">
+
+        <TextView
+            style="@style/tv_black_1_size_20"
+            android:text="@string/app_name" />
+
+        <TextView
+            style="@style/tv_gray_2_size_12"
+            android:layout_marginTop="4dp"
+            android:text="@string/demo_typography_sample" />
+
+        <!-- ========== 表面 ========== -->
+        <TextView
+            style="@style/tv_black_1_size_16"
+            android:layout_marginTop="24dp"
+            android:text="@string/demo_section_surfaces" />
+
+        <TextView
+            style="@style/tv_gray_3_size_11"
+            android:layout_marginTop="4dp"
+            android:text="@string/demo_label_card" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="72dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_gray_surface_card_1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="72dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_gray_surface_lift_1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="72dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_gray_surface_float_1" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/tv_gray_3_size_10"
+            android:layout_marginTop="4dp"
+            android:text="@string/demo_label_lift" />
+
+        <!-- 大面板 -->
+        <TextView
+            style="@style/tv_gray_3_size_11"
+            android:layout_marginTop="12dp"
+            android:text="@string/demo_label_panel" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_gray_surface_panel_1"
+            android:padding="16dp">
+
+            <TextView
+                style="@style/tv_black_1_size_14"
+                android:text="@string/demo_label_panel" />
+        </FrameLayout>
+
+        <!-- ========== 填充与渐变 ========== -->
+        <TextView
+            style="@style/tv_black_1_size_16"
+            android:layout_marginTop="24dp"
+            android:text="@string/demo_section_fill" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/tv_black_1_size_12"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_gray_fill_block_1"
+                android:gravity="center"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="@string/demo_label_block" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="1dp" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_gray_gradient_panel_1"
+                android:minHeight="48dp">
+
+                <TextView
+                    style="@style/tv_black_1_size_11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/demo_label_gradient" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- ========== 按钮 ========== -->
+        <TextView
+            style="@style/tv_black_1_size_16"
+            android:layout_marginTop="24dp"
+            android:text="@string/demo_section_buttons" />
+
+        <TextView
+            style="@style/tv_white_1_size_15"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/sel_interact_capsule_emphasis_default"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="@string/demo_btn_primary" />
+
+        <TextView
+            style="@style/tv_black_1_size_15"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/sel_interact_capsule_neutral_default"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="@string/demo_btn_secondary" />
+
+        <TextView
+            style="@style/tv_orange_1_size_15"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/sel_interact_flat_neutral_default"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/demo_btn_text" />
+
+        <TextView
+            style="@style/tv_orange_1_size_15"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/sel_interact_outline_emphasis_default"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="@string/demo_btn_outline" />
+
+        <TextView
+            style="@style/tv_gray_2_size_12"
+            android:layout_marginTop="16dp"
+            android:text="@string/demo_btn_disabled_hint" />
+
+        <TextView
+            style="@style/tv_white_1_size_15"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/sel_interact_capsule_emphasis_default"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="@string/demo_btn_primary" />
+
+        <Button
+            style="@style/tv_black_1_size_15"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/sel_interact_capsule_neutral_default"
+            android:enabled="false"
+            android:minHeight="48dp"
+            android:text="@string/demo_btn_secondary" />
+
+        <!-- ========== 输入框 ========== -->
+        <TextView
+            style="@style/tv_black_1_size_16"
+            android:layout_marginTop="24dp"
+            android:text="@string/demo_section_fields" />
+
+        <EditText
+            style="@style/tv_black_1_size_14"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/sel_field_rect_idle_default"
+            android:hint="@string/demo_field_normal"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:paddingLeft="12dp"
+            android:paddingTop="12dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="12dp"
+            android:textColorHint="@color/func_gray_text_3"
+            tools:ignore="Autofill,TextFields" />
+
+        <EditText
+            style="@style/tv_gray_1_size_14"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/sel_field_rect_hint_static"
+            android:hint="@string/demo_field_hint"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:paddingLeft="12dp"
+            android:paddingTop="12dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="12dp"
+            android:textColorHint="@color/func_gray_text_4"
+            tools:ignore="Autofill,TextFields" />
+
+        <EditText
+            style="@style/tv_red_1_size_14"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/sel_field_rect_alert_static"
+            android:hint="@string/demo_field_error"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:paddingLeft="12dp"
+            android:paddingTop="12dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="12dp"
+            android:textColorHint="@color/func_red_text_2"
+            tools:ignore="Autofill,TextFields" />
+
+        <EditText
+            style="@style/tv_gray_2_size_14"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/sel_field_rect_idle_default"
+            android:enabled="false"
+            android:hint="@string/demo_field_disabled"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:paddingLeft="12dp"
+            android:paddingTop="12dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="12dp"
+            android:textColorHint="@color/func_gray_text_3"
+            tools:ignore="Autofill,TextFields" />
+
+        <!-- ========== 文字 ========== -->
+        <TextView
+            style="@style/tv_black_1_size_16"
+            android:layout_marginTop="24dp"
+            android:text="@string/demo_section_typography" />
+
+        <TextView
+            style="@style/tv_black_1_size_14"
+            android:layout_marginTop="8dp"
+            android:text="tv_black_1_size_14" />
+
+        <TextView
+            style="@style/tv_black_2_size_13"
+            android:layout_marginTop="4dp"
+            android:text="tv_black_2_size_13" />
+
+        <TextView
+            style="@style/tv_gray_1_size_12"
+            android:layout_marginTop="4dp"
+            android:text="tv_gray_1_size_12" />
+
+        <TextView
+            style="@style/tv_orange_1_size_14"
+            android:layout_marginTop="4dp"
+            android:text="tv_orange_1_size_14" />
+
+        <TextView
+            style="@style/tv_blue_1_size_14"
+            android:layout_marginTop="4dp"
+            android:text="tv_blue_1_size_14" />
+
+        <TextView
+            style="@style/tv_green_1_size_14"
+            android:layout_marginTop="4dp"
+            android:text="tv_green_1_size_14" />
+
+        <!-- ========== 遮罩示例 ========== -->
+        <TextView
+            style="@style/tv_black_1_size_16"
+            android:layout_marginTop="24dp"
+            android:text="@string/demo_section_scrim" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_black_fill_scrim_1">
+
+            <TextView
+                style="@style/tv_white_1_size_13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/demo_scrim_label" />
+        </FrameLayout>
+
+        <TextView
+            style="@style/tv_gray_3_size_11"
+            android:layout_marginTop="16dp"
+            android:lineSpacingExtra="2dp"
+            android:text="提示：点右上角按钮切换日/夜间并 recreate；也可改系统深色对比 func_ → t_。本页未单独换 drawable。" />
+
+    </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_theme_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@string/theme_toggle_cd"
+        app:backgroundTint="@color/func_orange_bg_1"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_theme_night"
+        app:tint="@color/func_white_text_1"
+        tools:ignore="SpeakableTextPresent" />
+</FrameLayout>

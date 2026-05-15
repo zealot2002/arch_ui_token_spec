@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Token 样例</string>
+    <string name="demo_typography_sample">Drawable · func_ 文字样式 · 深浅色随 t_ 映射</string>
+    <string name="demo_section_surfaces">表面（card / lift / float）</string>
+    <string name="demo_section_fill">填充块与渐变</string>
+    <string name="demo_section_buttons">按钮（实心 / 描边 / 文字）</string>
+    <string name="demo_section_fields">输入框</string>
+    <string name="demo_section_typography">文字样式</string>
+    <string name="demo_section_scrim">遮罩（dim scrim）</string>
+    <string name="demo_label_card">card · lift · float</string>
+    <string name="demo_label_lift">左→右：card_1 · lift_1 · float_1</string>
+    <string name="demo_label_panel">surface_panel_1</string>
+    <string name="demo_label_block">fill_block_1</string>
+    <string name="demo_label_gradient">gradient_panel_1</string>
+    <string name="demo_btn_primary">主操作 · capsule emphasis</string>
+    <string name="demo_btn_secondary">次操作 · capsule neutral</string>
+    <string name="demo_btn_text">文字按钮 · flat neutral</string>
+    <string name="demo_btn_outline">幽灵按钮 · outline emphasis</string>
+    <string name="demo_btn_disabled_hint">以下为禁用态（继承 selector 内 drawable）</string>
+    <string name="demo_field_normal">常态 · sel_field_rect_idle_default</string>
+    <string name="demo_field_hint">弱提示描边 · sel_field_rect_hint_static</string>
+    <string name="demo_field_error">错误态 · sel_field_rect_alert_static</string>
+    <string name="demo_field_disabled">禁用</string>
+    <string name="demo_scrim_label">bg_black_fill_scrim_1 + tv_white_1</string>
+    <string name="theme_toggle_cd">切换浅色 / 深色模式</string>
+</resources>

@@ -223,6 +223,9 @@
     <color name="t_orange_4_alpha20">@color/orange_4_alpha20</color>
     <color name="t_orange_4_alpha40">@color/orange_4_alpha40</color>
 
+    <!-- 强调色块上的浅色字：引用基础白，不在 values-night 覆写则昼夜均为浅字（适配主按钮等） -->
+    <color name="t_on_emphasis_light_1">@color/white_1</color>
+
     <!-- ========== 通用功能色层（App通用职能层）========== -->
     <!-- 文本色：7色系 × 4档 -->
     <color name="func_black_text_1">@color/t_black_8</color>
@@ -234,6 +237,8 @@
     <color name="func_gray_text_2">@color/t_gray_5</color>
     <color name="func_gray_text_3">@color/t_gray_6</color>
     <color name="func_gray_text_4">@color/t_gray_7</color>
+
+    <color name="func_white_text_1">@color/t_on_emphasis_light_1</color>
 
     <color name="func_red_text_1">@color/t_red_4</color>
     <color name="func_red_text_2">@color/t_red_3</color>
@@ -369,6 +374,9 @@
 
     <color name="func_green_shadow_1">@color/t_green_4_alpha10</color>
     <color name="func_green_shadow_2">@color/t_green_4_alpha20</color>
+
+    <!-- 页面根背景：浅色为白，深色随 t_white_1 主题映射 -->
+    <color name="func_surface_paper_1">@color/t_white_1</color>
 
     <!-- Drawable 全透明占位（不映射主题，避免在 shape 中写 # 色值） -->
     <color name="func_clear_1">@android:color/transparent</color>

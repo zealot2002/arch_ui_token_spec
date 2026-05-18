@@ -17,14 +17,11 @@
 
 > **跨平台**：Android 的 Drawable/selector 对应 iOS 的 Asset Catalog 状态图、Web 的 design-token + CSS 状态类；命名与分层思想一致。
 
-**本文目标读者**：Android 开发者、UI/UX 工程师、技术团队负责人
-
-**你将学到**：
+**本文要点**：
 1. 为什么需要 Drawable 层规范
 2. Drawable 层的三层架构设计
 3. 统一的命名规范
-4. 形状层和组件层的设计要点
-5. 性能优化的最佳实践
+4. 形态层和组件层的设计要点
 
 ---
 
@@ -352,65 +349,9 @@ func_orange_bg_1 → t_orange_4 → orange_3b (#FF8833)
 
 ---
 
-## 十、性能优化：Drawable 的最佳实践
+## 十、与 View 的集成方式
 
-### 10.1 避免过度绘制
-
-```xml
-<!-- ❌ 不好：多层叠加导致过度绘制 -->
-<layer-list>
-    <item>
-        <shape>
-            <solid android:color="@color/func_orange_bg_1" />
-        </shape>
-    </item>
-    <item android:top="2dp">
-        <shape>
-            <solid android:color="@color/func_white_bg_1" />
-        </shape>
-    </item>
-</layer-list>
-
-<!-- ✅ 好：使用 padding 替代叠加 -->
-<shape>
-    <solid android:color="@color/func_orange_bg_1" />
-    <padding android:top="2dp" />
-</shape>
-```
-
-### 10.2 使用 Vector Drawable
-
-对于图标，优先使用 Vector Drawable：
-
-```xml
-<!-- ic_theme_day.xml -->
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path
-        android:fillColor="@color/func_orange_text_1"
-        android:pathData="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z"/>
-</vector>
-```
-
-### 10.3 复用 Drawable 资源
-
-```xml
-<!-- ✅ 好：复用基础形状 -->
-<selector>
-    <item android:state_pressed="true" 
-        android:drawable="@drawable/bg_orange_fill_interact_2" />
-    <item android:drawable="@drawable/bg_orange_fill_interact_1" />
-</selector>
-```
-
----
-
-## 十一、与 View 的集成方式
-
-### 11.1 通过 Style 引用
+### 10.1 通过 Style 引用
 
 ```xml
 <!-- styles_button.xml -->
@@ -420,7 +361,7 @@ func_orange_bg_1 → t_orange_4 → orange_3b (#FF8833)
 </style>
 ```
 
-### 11.2 在布局中直接使用
+### 10.2 在布局中直接使用
 
 ```xml
 <Button
@@ -432,7 +373,7 @@ func_orange_bg_1 → t_orange_4 → orange_3b (#FF8833)
 
 ---
 
-## 十二、完整架构总结
+## 十一、完整架构总结
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -463,7 +404,7 @@ func_orange_bg_1 → t_orange_4 → orange_3b (#FF8833)
 
 ---
 
-## 十三、总结
+## 十二、总结
 
 Drawable 层是连接颜色和 UI 组件的桥梁，它的设计直接影响到：
 - UI 的一致性和美观度
@@ -475,8 +416,7 @@ Drawable 层是连接颜色和 UI 组件的桥梁，它的设计直接影响到�
 1. **分离关注点**：形态结构与填色引用分离，状态组合与组件分离
 2. **统一命名规范**：`{类型}_{色系}_{用途}_{状态}_{档位}`
 3. **复用优先**：避免重复定义，提高资源利用率
-4. **性能优化**：减少过度绘制，使用 Vector Drawable
-5. **与颜色体系集成**：只引用设计师定义的 `func_*`，支持主题切换
+4. **与颜色体系集成**：只引用设计师定义的 `func_*`，支持主题切换
 
 ---
 

@@ -1,6 +1,6 @@
-# 从工程实践到架构设计：Style 层如何系统性解决代码冗余
+# 现代化 UI 架构：Style 层如何系统性消除代码冗余
 
-> 本文是 UI 架构系列的第三篇，建议先阅读 [第一篇：三层颜色架构](ui_architecture1.md)、[第二篇：Drawable 层设计](ui_architecture2.md) 了解核心设计理念。
+> 本文是 UI 架构系列的第三篇，建议先阅读 [第一篇：三层颜色体系与系统化设计方案](ui_architecture1.md)、[第二篇：Drawable 层规范与工程实践](ui_architecture2.md) 了解核心设计理念。
 
 ---
 
@@ -443,7 +443,7 @@ Style 层不是简单的"属性集合"，而是**工程经验的沉淀和复用*
 > 💡 如果你觉得这篇文章对你有帮助，欢迎点赞、收藏、转发。关注我，获取更多Android架构设计干货。
 >
 > **系列文章**：
-> - [第一篇：三层颜色架构](ui_architecture1.md)
-> - [第二篇：Drawable 层设计](ui_architecture2.md)
-> - **第三篇：Style 层设计**（本文）
-> - [第四篇：架构总结与设计主权回归](ui_architecture4.md)
+> - [第一篇：三层颜色体系与系统化设计方案](ui_architecture1.md)
+> - [第二篇：Drawable 层规范与工程实践](ui_architecture2.md)
+> - **第三篇：Style 层如何系统性消除代码冗余**（本文）
+> - [第四篇：设计主权回归与团队落地](ui_architecture4.md)

@@ -1,9 +1,9 @@
 # 现代化 UI 架构：三层颜色体系与系统化设计方案
 
 > 本文是 **UI 架构系列** 的第一篇，将深入探讨颜色层的设计。后续文章将依次介绍：
-> - [第二篇：Drawable 层的规范设计](ui_architecture2.md)
-> - [第三篇：Style 层的工程化实践](ui_architecture3.md)
-> - [第四篇：架构总结与设计主权回归](ui_architecture4.md)
+> - [第二篇：Drawable 层规范与工程实践](ui_architecture2.md)
+> - [第三篇：Style 层如何系统性消除代码冗余](ui_architecture3.md)
+> - [第四篇：设计主权回归与团队落地](ui_architecture4.md)
 
 > **注**：本文以 Android 为例进行说明，但核心思想完全适用于 iOS、React、H5、小程序等任何平台。
 

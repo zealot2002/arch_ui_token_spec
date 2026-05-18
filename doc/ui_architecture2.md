@@ -1,6 +1,6 @@
-# 从颜色到形态：Drawable 层的规范设计与最佳实践
+# 现代化 UI 架构：Drawable 层规范与工程实践
 
-> 本文是 UI 架构系列的第二篇，建议先阅读 [第一篇：三层颜色架构](ui_architecture1.md) 了解核心设计理念。
+> 本文是 UI 架构系列的第二篇，建议先阅读 [第一篇：三层颜色体系与系统化设计方案](ui_architecture1.md) 了解核心设计理念。
 
 ---
 
@@ -428,7 +428,7 @@ Drawable 层是连接颜色和 UI 组件的桥梁，它的设计直接影响到�
 > 💡 如果你觉得这篇文章对你有帮助，欢迎点赞、收藏、转发。关注我，获取更多 Android 架构设计干货。
 >
 > **系列文章**：
-> - [第一篇：三层颜色架构](ui_architecture1.md)
-> - **第二篇：Drawable 层设计**（本文）
-> - [第三篇：Style 层设计](ui_architecture3.md)
-> - [第四篇：架构总结与设计主权回归](ui_architecture4.md)
+> - [第一篇：三层颜色体系与系统化设计方案](ui_architecture1.md)
+> - **第二篇：Drawable 层规范与工程实践**（本文）
+> - [第三篇：Style 层如何系统性消除代码冗余](ui_architecture3.md)
+> - [第四篇：设计主权回归与团队落地](ui_architecture4.md)

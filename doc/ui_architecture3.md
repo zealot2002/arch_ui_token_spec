@@ -123,12 +123,12 @@ flowchart TB
 
     BASE --> COLOR --> SIZE
 
-    classDef base fill:#F3F4F6,stroke:#6B7280,color:#1F2937
-    classDef color fill:#FFF4ED,stroke:#EA580C,color:#9A3412
-    classDef size fill:#EEF4FF,stroke:#3B82F6,color:#1E3A5F
-    class BASE base
-    class COLOR color
-    class SIZE size
+    classDef tvBase fill:#F3F4F6,stroke:#6B7280,color:#1F2937
+    classDef tvClr fill:#FFF4ED,stroke:#EA580C,color:#9A3412
+    classDef tvSz fill:#EEF4FF,stroke:#3B82F6,color:#1E3A5F
+    class BASE tvBase
+    class COLOR tvClr
+    class SIZE tvSz
 ```
 
 ### 3.2 色系层定义
@@ -385,14 +385,14 @@ flowchart TB
     TV --> SZ
     TV1 -->|textColor| FC --> T --> B
 
-    classDef style fill:#EEF4FF,stroke:#3B82F6,color:#1E3A5F
-    classDef func fill:#FFF4ED,stroke:#EA580C,color:#9A3412
-    classDef theme fill:#F5F3FF,stroke:#7C3AED,color:#5B21B6
-    classDef base fill:#F3F4F6,stroke:#6B7280,color:#1F2937
-    class TV,TV1 style
-    class FC func
-    class T theme
-    class B base
+    classDef tvSty fill:#EEF4FF,stroke:#3B82F6,color:#1E3A5F
+    classDef funcClr fill:#FFF4ED,stroke:#EA580C,color:#9A3412
+    classDef themeTok fill:#F5F3FF,stroke:#7C3AED,color:#5B21B6
+    classDef primClr fill:#F3F4F6,stroke:#6B7280,color:#1F2937
+    class TV,TV1 tvSty
+    class FC funcClr
+    class T themeTok
+    class B primClr
 ```
 
 ### 7.2 主题切换支持

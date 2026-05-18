@@ -93,10 +93,10 @@ flowchart TB
 
     classDef comp fill:#EEF4FF,stroke:#3B82F6,color:#1E3A5F
     classDef shape fill:#F0FDF4,stroke:#16A34A,color:#14532D
-    classDef color fill:#FFF4ED,stroke:#EA580C,color:#9A3412
+    classDef tokClr fill:#FFF4ED,stroke:#EA580C,color:#9A3412
     class C1,C2 comp
     class S1,S2 shape
-    class COL1,COL2 color
+    class COL1,COL2 tokClr
 ```
 
 ### 2.1 核心原则

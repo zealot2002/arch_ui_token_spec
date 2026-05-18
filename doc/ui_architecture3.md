@@ -113,12 +113,20 @@
 
 ### 3.1 设计思路
 
-```
-基础层：tv_base（3个核心属性）
-    ↓
-色系层：tv_black_1 / tv_gray_2 / tv_orange_1（继承 base + 颜色）
-    ↓
-字号层：tv_black_1_size_15（继承色系 + 字号）
+```mermaid
+flowchart TB
+    BASE["tv_base<br/>3 个核心属性<br/>宽高 · includeFontPadding"]
+    COLOR["色系层 tv_black_1 / tv_gray_2 …<br/>继承 base + textColor"]
+    SIZE["字号层 tv_black_1_size_15 …<br/>继承色系 + textSize"]
+
+    BASE --> COLOR --> SIZE
+
+    classDef base fill:#F3F4F6,stroke:#6B7280,color:#1F2937
+    classDef color fill:#FFF4ED,stroke:#EA580C,color:#9A3412
+    classDef size fill:#EEF4FF,stroke:#3B82F6,color:#1E3A5F
+    class BASE base
+    class COLOR color
+    class SIZE size
 ```
 
 ### 3.2 色系层定义
@@ -339,28 +347,35 @@ Btn.{形状}.{类型}.{尺寸}
 
 ### 7.1 完整数据流
 
-```
-tv_black_1_size_15
-    │
-    ├── 继承 tv_black_1
-    │       └── textColor → @color/func_black_text_1
-    │                           └── @color/t_black_8
-    │                               └── @color/black_8
-    │
-    └── textSize → 15sp
+```mermaid
+flowchart TB
+    TV["tv_black_1_size_15"]
+    TV1["tv_black_1"]
+    FC["func_black_text_1"]
+    T["t_black_8"]
+    B["black_8"]
+    SZ["textSize 15sp"]
+
+    TV --> TV1
+    TV --> SZ
+    TV1 -->|textColor| FC --> T --> B
+
+    classDef style fill:#EEF4FF,stroke:#3B82F6,color:#1E3A5F
+    classDef func fill:#FFF4ED,stroke:#EA580C,color:#9A3412
+    classDef theme fill:#F5F3FF,stroke:#7C3AED,color:#5B21B6
+    classDef base fill:#F3F4F6,stroke:#6B7280,color:#1F2937
+    class TV,TV1 style
+    class FC func
+    class T theme
+    class B base
 ```
 
 ### 7.2 主题切换支持
 
 由于 Style 通过 `@color/func_*` 引用功能色，而功能色又通过 `@color/t_*` 引用主题色，所以：
 
-```
-日间模式：
-tv_black_1_size_15 → func_black_text_1 → t_black_8 → black_8
-
-夜间模式：
-tv_black_1_size_15 → func_black_text_1 → t_black_8 → white_1（由 values-night 中 t_* 映射决定）
-```
+- **日间**：`tv_black_1_size_15` → `func_black_text_1` → `t_black_8` → `black_8`
+- **夜间**：`tv_black_1_size_15` → `func_black_text_1` → `t_black_8` → `white_1`（由 `values-night` 中 `t_*` 映射决定）
 
 **无需修改任何 Style，自动适配主题**。
 
@@ -370,21 +385,19 @@ tv_black_1_size_15 → func_black_text_1 → t_black_8 → white_1（由 values-
 
 ### 8.1 渐进式改造
 
-```
-阶段1：定义 tv_base 和常用色系样式（1-2天）
-阶段2：定义常用字号组合（tv_black_1_size_12/14/15/16）（1天）
-阶段3：逐步替换现有布局中的重复属性（持续进行）
-阶段4：新增 TextView 时直接使用 Style（日常规范）
+```mermaid
+flowchart TB
+    P1["阶段1<br/>tv_base + 常用色系<br/>1-2 天"] --> P2["阶段2<br/>常用字号组合<br/>1 天"]
+    P2 --> P3["阶段3<br/>逐步替换布局重复属性"]
+    P3 --> P4["阶段4<br/>新增 TextView 必须用 Style"]
 ```
 
 ### 8.2 团队协作规范
 
-```
-1. 所有新增 TextView 必须使用设计师定义的 tv_* Style
-2. 禁止在布局中直接定义 textColor、textSize、includeFontPadding
-3. 需要新的颜色+字号组合时，由设计师在 styles_tv.xml 中新增，研发提需求、不自行加 token
+1. 所有新增 TextView 必须使用设计师定义的 `tv_*` Style
+2. 禁止在布局中直接定义 `textColor`、`textSize`、`includeFontPadding`
+3. 需要新的颜色+字号组合时，由设计师在 `styles_tv.xml` 中新增，研发提需求、不自行加 token
 4. 定期审查，清理直接定义属性的代码
-```
 
 ### 8.3 扩展原则
 

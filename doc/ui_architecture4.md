@@ -4,31 +4,37 @@
 
 ---
 
-## 一、架构全景：四层体系的完整视图
+## 一、架构全景：
 
 在前面三篇文章中，我们构建了一套完整的 UI 资源架构体系：
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Layer 4: Style 层                       │
-│   - tv_*：文字样式（颜色+字号组合）                          │
-│   - Btn.*：按钮样式（背景+文字+尺寸）                        │
-│   - 解决：代码冗余、统一标准、维护效率                        │
-├─────────────────────────────────────────────────────────────┤
-│                    Layer 3: Drawable 层                     │
-│   - sel_*：状态选择器（按钮、输入框等）                       │
-│   - bg_*：静态背景（卡片、填充等）                           │
-│   - 解决：形态定义、状态组合、主题适配                        │
-├─────────────────────────────────────────────────────────────┤
-│                    Layer 2: Func_* 功能色层                  │
-│   - 7大色系 × 6种职能 × 2-4档                              │
-│   - 解决：颜色语义化、职能归一化、场景复用                    │
-├─────────────────────────────────────────────────────────────┤
-│                    Layer 1: 基础色 + 主题层                  │
-│   - 基础色：纯原始色值定义                                   │
-│   - t_*：日间/夜间模式颜色映射                              │
-│   - 解决：主题切换、颜色一致性                               │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph APP["上层应用层"]
+        direction LR
+        DRAW["Drawable 层<br/>sel_* 状态选择器 · bg_* 静态背景"]
+        STYLE["Style 层<br/>tv_* 文字样式 · Btn.* 按钮样式"]
+    end
+
+    subgraph CORE["三层颜色架构"]
+        direction TB
+        L3["Layer 3 功能色层 func_*<br/>命名：func_色系_职能_档位<br/>职责：文本 / 背景 / 边框等 UI 职能"]
+        L2["Layer 2 主题适配层 t_*<br/>命名：t_色系_数字<br/>职责：日间 / 夜间颜色映射"]
+        L1["Layer 1 全局基础色层<br/>命名：色系_数字<br/>职责：原始色值，品牌升级时才修改"]
+    end
+
+    APP --> L3
+    L3 --> L2 --> L1
+
+    classDef app fill:#EEF4FF,stroke:#3B82F6,color:#1E3A5F
+    classDef l3 fill:#FFF4ED,stroke:#EA580C,color:#9A3412
+    classDef l2 fill:#F5F3FF,stroke:#7C3AED,color:#5B21B6
+    classDef l1 fill:#F3F4F6,stroke:#6B7280,color:#1F2937
+
+    class DRAW,STYLE app
+    class L3 l3
+    class L2 l2
+    class L1 l1
 ```
 
 ### 1.1 架构的核心价值
@@ -51,11 +57,11 @@
 
 ---
 
-## 二、深度思考：UI架构究竟属于谁？
+## 二、深度思考：UI 架构的权力究竟属于谁？
 
 ### 2.1 一个尖锐的问题
 
-> **UI 架构究竟是属于设计师还是属于程序员？**
+> **UI 架构的权力究竟属于设计师还是属于程序员？**
 
 这个问题困扰了无数团队。让我们从几个角度分析：
 
@@ -98,8 +104,12 @@
 
 ### 3.2 设计师主导的工作流
 
-```
-设计总监定义 → 资源文件配置 → 程序员引用 → 自动适配
+```mermaid
+flowchart LR
+    A["设计总监定义"] --> B["资源文件配置"] --> C["程序员引用"] --> D["自动适配"]
+
+    classDef step fill:#FFF4ED,stroke:#EA580C,color:#9A3412
+    class A,B,C,D step
 ```
 
 **具体实现**：
@@ -174,24 +184,19 @@
 
 ### 5.1 渐进式落地策略
 
-```
-阶段1：基础建设（1-2周）
-    ↓
-阶段2：核心组件改造（2-4周）
-    ↓
-阶段3：全面推广（持续进行）
-    ↓
-阶段4：迭代优化（持续进行）
+```mermaid
+flowchart TB
+    P1["阶段1 基础建设<br/>1-2 周"] --> P2["阶段2 核心组件改造<br/>2-4 周"]
+    P2 --> P3["阶段3 全面推广"]
+    P3 --> P4["阶段4 迭代优化"]
 ```
 
 ### 5.2 团队协作规范
 
-```
 1. 设计规范先行：设计总监必须先定义设计语言
 2. 资源配置同步：所有颜色/字号/Style/Drawable 变更仅由设计侧提交资源 PR
-3. 代码审查把关：研发 PR 禁止硬编码颜色、尺寸，禁止新增 func_* / tv_* / Btn.*
+3. 代码审查把关：研发 PR 禁止硬编码颜色、尺寸，禁止新增 `func_*` / `tv_*` / `Btn.*`
 4. 定期审计：CI 门禁 + 设计走查，发现违规引用一律打回
-```
 
 ### 5.3 工具链支持
 
@@ -246,173 +251,35 @@ UI 架构不是简单的"颜色配置"，而是**设计语言的工程化落地*
 
 需要强调的是，这套 UI 架构虽然以 Android 作为例子说明，但**核心思想可以完全平移到 iOS、React、H5、小程序等任何平台**。架构的本质是"设计语言的工程化表达"，与具体实现技术无关。
 
-在 AI 大模型的帮助下，设计师可以交付完整的一套 UI 架构。这套架构是 **AI 友好的**——通过合理的 Prompt、Skills 和脚本，能够快速得到全平台的统一 UI 架构范式。
+在 AI 大模型的帮助下，设计师可以交付完整的一套 UI 架构。这套架构是 **AI 友好的**——通过合理的 Prompt、设计规范与资源清单，能够快速沉淀全平台统一的设计语言。
 
 最重要的一点：**程序员没有权力定义颜色、样式、字号、按钮，也没有权力「扩展档位」或私自新增 token**。需要新色、新字号、新 Style 时，必须回到设计师维护的资源文件（本体系中的 `colors_*.xml`、`styles_*.xml`、`drawable/`）由设计侧变更，再合入工程。程序员的职责只有一项：**严格引用设计师已发布的资源**，确保设计意图完整落地。
 
-### 代码检查门禁：确保架构规范的强制落地
+### 规范门禁：让权力回归不只停留在纸面上
 
-为了确保这套 UI 架构能够被正确遵守，需要建立严格的代码检查门禁机制。
+架构写得再漂亮，若缺少**可执行的约束**，仍会回到「谁写页面谁说了算」的老路。所谓门禁，并不是为难研发，而是把前文所说的**设计主权**固化进团队的日常流程：该谁定的已经定好，研发只做引用与实现。
 
-#### 门禁规则
+#### 建议守住的四条底线
 
-1. **禁止硬编码颜色值**：任何布局文件中直接写 `#RRGGBB` 或 `#AARRGGBB` 格式的颜色值都应被阻止
-2. **禁止直接使用基础色**：代码中只能引用 `func_*` 功能色，禁止直接引用 `t_*` 主题色或原始色值
-3. **必须使用 Style**：TextView 必须使用 `tv_*` 样式，Button 必须使用 `Btn.*` 样式
-4. **禁止重复定义属性**：禁止在布局文件中重复定义 textColor、textSize、includeFontPadding 等已在 Style 中定义的属性
+1. **颜色只能来自设计 token**：页面里不应出现随手写的色值，也不应绕过功能色层去碰主题层、基础色。
+2. **文字与按钮必须走设计样式**：字号、字色、按钮形态等，应在设计侧资源中选型，而不是在页面里临时拼凑。
+3. **禁止重复定义已规范化的属性**：同一类控件的表现，应通过样式体系统一，避免「这个页面特殊、那个页面例外」。
+4. **变更入口唯一在设计侧**：需要新色、新档位、新样式时，由设计师更新资源与规范，研发提需求、不自行扩库。
 
-#### 检查脚本示例
+#### 如何落地
 
-以下为**示意脚本**（未覆盖 `AppCompatTextView`、预览布局等边界），正式规则应以团队 CI 与设计师维护的检查清单为准：
+- **合并前审查**：把 UI 资源是否符合规范，纳入 Code Review 的固定项；关键版本可由设计同学参与走查或签字。
+- **设计资源即唯一真相**：颜色、样式、Drawable 等集中由设计维护的资源包发布，业务工程只依赖已发布版本，避免各端各写一套。
+- **自动化作为兜底**：团队可按需要配置静态检查或流水线卡点，但目的始终是**拦截越权定义**，而不是堆砌技术细节。
+- **违规即打回**：一旦在页面里发现临时色、临时字号、临时按钮样式，应退回并要求回到设计 token 与样式体系，而不是在评审会上「差不多就行」。
 
-```python
-#!/usr/bin/env python3
-"""
-UI 架构合规性检查脚本 - 设计师维护的门禁工具
-"""
-import os
-import re
+#### 门禁真正要达成的效果
 
-def check_color_hardcode(filepath):
-    """检查是否存在硬编码颜色值"""
-    with open(filepath, 'r') as f:
-        content = f.read()
-    
-    # 匹配硬编码颜色值
-    color_pattern = r'android:.*="#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})"'
-    matches = re.findall(color_pattern, content)
-    
-    if matches:
-        print(f"❌ {filepath}: 发现硬编码颜色值")
-        for match in matches:
-            print(f"   - #{match}")
-        return False
-    return True
+- **设计师的权威性**：视觉语言由设计定义，研发不再充当「第二设计师」。
+- **规范的刚性**：越权改动进不了主干，减少靠人记、靠自觉的侥幸。
+- **产品的一致性**：用户在不同页面、不同版本里，看到的是同一套品牌与品质感。
 
-def check_style_usage(filepath):
-    """检查是否正确使用 Style"""
-    with open(filepath, 'r') as f:
-        content = f.read()
-    
-    # 检查 TextView 是否使用了正确的 Style
-    tv_pattern = r'<TextView[^>]+>'
-    for match in re.finditer(tv_pattern, content):
-        tv_tag = match.group()
-        if 'style="@style/tv_' not in tv_tag:
-            print(f"❌ {filepath}: TextView 未使用 tv_* 样式")
-            return False
-    
-    # 检查 Button 是否使用了正确的 Style
-    btn_pattern = r'<Button[^>]+>'
-    for match in re.finditer(btn_pattern, content):
-        btn_tag = match.group()
-        if 'style="@style/Btn.' not in btn_tag:
-            print(f"❌ {filepath}: Button 未使用 Btn.* 样式")
-            return False
-    
-    return True
-
-def check_func_color_only(filepath):
-    """检查是否只使用 func_* 功能色"""
-    with open(filepath, 'r') as f:
-        content = f.read()
-    
-    # 禁止直接使用 t_* 或原始色值
-    forbidden_patterns = [
-        r'@color/t_',
-        r'@color/black_\d',
-        r'@color/white_\d',
-        r'@color/orange_\d',
-        r'@color/gray_\d',
-        r'@color/red_\d',
-        r'@color/blue_\d',
-        r'@color/green_\d',
-        r'@color/yellow_\d',
-    ]
-    
-    for pattern in forbidden_patterns:
-        if re.search(pattern, content):
-            print(f"❌ {filepath}: 使用了非 func_* 颜色")
-            return False
-    
-    return True
-
-def main():
-    layout_dir = 'app/src/main/res/layout'
-    all_passed = True
-    
-    for filename in os.listdir(layout_dir):
-        if filename.endswith('.xml'):
-            filepath = os.path.join(layout_dir, filename)
-            
-            print(f"🔍 检查: {filepath}")
-            
-            if not check_color_hardcode(filepath):
-                all_passed = False
-            
-            if not check_style_usage(filepath):
-                all_passed = False
-            
-            if not check_func_color_only(filepath):
-                all_passed = False
-    
-    if all_passed:
-        print("✅ 所有检查通过")
-        exit(0)
-    else:
-        print("❌ 检查失败，请修复以上问题")
-        exit(1)
-
-if __name__ == '__main__':
-    main()
-```
-
-#### CI/CD 集成
-
-将上述脚本集成到 CI/CD 流水线中：
-
-```yaml
-# .github/workflows/ui-check.yml
-name: UI Architecture Check
-
-on: [pull_request]
-
-jobs:
-  ui-check:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    
-    - name: Run UI compliance check
-      run: python scripts/check_ui_compliance.py
-      
-    - name: Fail if check fails
-      if: failure()
-      run: |
-        echo "UI 架构检查失败！请确保："
-        echo "1. 所有颜色引用使用 func_* 前缀"
-        echo "2. TextView 使用 tv_* 样式"
-        echo "3. Button 使用 Btn.* 样式"
-        echo "4. 禁止硬编码颜色值"
-        exit 1
-```
-
-#### 门禁效果
-
-| 违规行为 | 检测结果 | 处理方式 |
-|---------|---------|---------|
-| 硬编码颜色 `#FF5733` | ❌ 拒绝提交 | 修改为 `@color/func_orange_text_1` |
-| 直接使用 `@color/t_black_1` | ❌ 拒绝提交 | 修改为 `@color/func_black_text_1` |
-| TextView 未使用 `tv_*` 样式 | ❌ 拒绝提交 | 添加 `style="@style/tv_black_1_size_15"` |
-| Button 未使用 `Btn.*` 样式 | ❌ 拒绝提交 | 添加 `style="@style/Btn.Capsule.Primary"` |
-| 正确引用 `@color/func_gray_text_2` | ✅ 通过 | 允许提交 |
-
-通过这套门禁机制，可以确保：
-- **设计师的权威性**：所有 UI 定义都来自设计师维护的 `app_res` 模块
-- **架构规范的强制执行**：任何违规代码都无法进入代码库
-- **视觉一致性的保障**：确保最终产品符合设计语言规范
+门禁不是冷冰冰的流程，而是对前文「权力回归」的**制度保障**。当设计与研发都认同这套边界，UI 走查才会从「找茬大战」变成「按图验收」。
 
 ---
 

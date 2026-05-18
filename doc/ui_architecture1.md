@@ -137,10 +137,16 @@ flowchart TB
 
 ### 2.2 严格单向依赖规则
 
-```
-基础色层 → 主题层 → 功能色层
-    ↑         ↑         ↑
-   改色      换肤     改职能
+```mermaid
+flowchart LR
+    L1["基础色层<br/>改色"] --> L2["主题层 t_*<br/>换肤"] --> L3["功能色层 func_*<br/>改职能"]
+
+    classDef l1 fill:#e3f2fd,stroke:#2196f3,color:#1e3a5f
+    classDef l2 fill:#f3e5f5,stroke:#9c27b0,color:#5b21b6
+    classDef l3 fill:#fff4ec,stroke:#ff9800,color:#9a3412
+    class L1 l1
+    class L2 l2
+    class L3 l3
 ```
 
 **为什么必须严格遵守单向依赖？**

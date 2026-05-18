@@ -1,6 +1,6 @@
 # 从工程实践到架构设计：Style 层如何系统性解决代码冗余
 
-> 本文是 UI 架构系列的第三篇，建议先阅读 [第一篇：三层颜色架构](/ui_architecture1)、[第二篇：Drawable 层设计](/ui_architecture2) 了解核心设计理念。
+> 本文是 UI 架构系列的第三篇，建议先阅读 [第一篇：三层颜色架构](ui_architecture1.md)、[第二篇：Drawable 层设计](ui_architecture2.md) 了解核心设计理念。
 
 ---
 
@@ -22,9 +22,11 @@
 
 这些属性被重复定义了成千上万次。想象一下：如果你有 500 个 TextView，有一天设计师说所有文字的字号要统一从 15sp 改成 16sp，或者要关闭字体内边距，你需要打开 500 个文件逐个修改——这简直是噩梦。
 
-我们分析了大量项目中的 TextView 使用情况，遵从 98% 的 TextView 的共性，提炼出这 5 个可以封装的基础属性。
+我们分析了大量项目中的 TextView 使用情况，遵从 98% 的 TextView 的共性，提炼出 **3 个**必须封装进 `tv_base` 的基础属性（宽高、`includeFontPadding`）。
 
-**tv style 层的核心价值，就是通过工程经验的沉淀，将 TextView 这些重复的属性抽取到 style 里，写一次就能在所有 TextView 中复用。**
+**tv style 层的核心价值**：由设计师在 `styles_tv.xml` 中定义颜色与字号组合，研发在布局里只引用 `tv_*`，不再自行决定 `textColor` / `textSize`。
+
+> **跨平台**：`tv_*` / `Btn.*` 对应 iOS 的 `UIFont`+语义色组合、Web 的 typography utility class；同样应由设计系统维护，研发只引用。
 
 ---
 
@@ -236,7 +238,7 @@
 <!-- 描边按钮 -->
 <style name="Btn.Outline.Primary" parent="BaseButton">
     <item name="android:background">@drawable/sel_orange_interact_outline_emphasis_default</item>
-    <item name="android:textColor">@color/t_orange_4</item>
+    <item name="android:textColor">@color/func_orange_text_1</item>
 </style>
 ```
 
@@ -342,8 +344,8 @@ tv_black_1_size_15
     │
     ├── 继承 tv_black_1
     │       └── textColor → @color/func_black_text_1
-    │                           └── @color/t_black_1
-    │                               └── @color/black_1
+    │                           └── @color/t_black_8
+    │                               └── @color/black_8
     │
     └── textSize → 15sp
 ```
@@ -354,10 +356,10 @@ tv_black_1_size_15
 
 ```
 日间模式：
-tv_black_1_size_15 → func_black_text_1 → t_black_1 → black_1 (#333333)
+tv_black_1_size_15 → func_black_text_1 → t_black_8 → black_8
 
 夜间模式：
-tv_black_1_size_15 → func_black_text_1 → t_black_1 → white_1 (#FFFFFF)
+tv_black_1_size_15 → func_black_text_1 → t_black_8 → white_1（由 values-night 中 t_* 映射决定）
 ```
 
 **无需修改任何 Style，自动适配主题**。
@@ -378,9 +380,9 @@ tv_black_1_size_15 → func_black_text_1 → t_black_1 → white_1 (#FFFFFF)
 ### 8.2 团队协作规范
 
 ```
-1. 所有新增 TextView 必须使用 Style
+1. 所有新增 TextView 必须使用设计师定义的 tv_* Style
 2. 禁止在布局中直接定义 textColor、textSize、includeFontPadding
-3. 需要新的颜色+字号组合时，在 styles_tv.xml 中添加
+3. 需要新的颜色+字号组合时，由设计师在 styles_tv.xml 中新增，研发提需求、不自行加 token
 4. 定期审查，清理直接定义属性的代码
 ```
 
@@ -388,9 +390,9 @@ tv_black_1_size_15 → func_black_text_1 → t_black_1 → white_1 (#FFFFFF)
 
 | 场景 | 做法 |
 |------|------|
-| 需要新字号 | 在对应色系下添加（如 `tv_black_1_size_17`） |
-| 需要新色系 | 添加色系层（如 `tv_purple_1`），再添加字号组合 |
-| 需要特殊效果 | 在布局中通过 `android:textStyle` 等属性覆盖 |
+| 需要新字号 | 设计师在对应色系下添加（如 `tv_black_1_size_17`） |
+| 需要新色系 | 设计师先补功能色，再添加 `tv_purple_1` 及字号组合 |
+| 需要特殊效果 | 优先在设计规范中沉淀；确属个例时可在布局用 `textStyle` 等覆盖 |
 
 ---
 
@@ -428,7 +430,7 @@ Style 层不是简单的"属性集合"，而是**工程经验的沉淀和复用*
 > 💡 如果你觉得这篇文章对你有帮助，欢迎点赞、收藏、转发。关注我，获取更多Android架构设计干货。
 >
 > **系列文章**：
-> - [第一篇：三层颜色架构](/ui_architecture1)
-> - [第二篇：7大色系×6种职能的通用职能层](/ui_architecture2)
-> - [第三篇：Drawable 层设计](/ui_architecture2)
-> - **第四篇：Style 层设计**（本文）
+> - [第一篇：三层颜色架构](ui_architecture1.md)
+> - [第二篇：Drawable 层设计](ui_architecture2.md)
+> - **第三篇：Style 层设计**（本文）
+> - [第四篇：架构总结与设计主权回归](ui_architecture4.md)

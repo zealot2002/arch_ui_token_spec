@@ -375,7 +375,7 @@ func_orange_bg_1 → t_orange_4 → orange_3b (#FF8833)
 
 ```xml
 <!-- styles_button.xml -->
-<style name="Btn.Capsule.Primary" parent="BaseButton">
+<style name="Btn.Orange.Capsule.Emphasis" parent="BaseButton">
     <item name="android:background">@drawable/sel_orange_interact_capsule_emphasis_default</item>
     <item name="android:textColor">@color/func_white_text_1</item>
 </style>

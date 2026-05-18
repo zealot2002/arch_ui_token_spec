@@ -131,7 +131,7 @@ flowchart LR
 3. **开发阶段**：程序员只需引用
    ```xml
    <TextView style="@style/tv_black_1_size_15" />
-   <Button style="@style/Btn.Capsule.Primary" />
+   <Button style="@style/Btn.Orange.Capsule.Emphasis" />
    ```
 
 ### 3.3 权力回归的意义

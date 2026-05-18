@@ -151,25 +151,25 @@
                 android:text="@string/demo_section_buttons" />
 
             <Button
-                style="@style/Btn.Capsule.Primary"
+                style="@style/Btn.Orange.Capsule.Emphasis"
                 android:layout_width="match_parent"
                 android:layout_marginTop="12dp"
                 android:text="@string/demo_btn_primary" />
 
             <Button
-                style="@style/Btn.Capsule.Neutral"
+                style="@style/Btn.Gray.Capsule.Neutral"
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
                 android:text="@string/demo_btn_secondary" />
 
             <Button
-                style="@style/Btn.Text.Primary"
+                style="@style/Btn.Orange.Text.Emphasis"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/demo_btn_text" />
 
             <Button
-                style="@style/Btn.Outline.Primary"
+                style="@style/Btn.Orange.Outline.Emphasis"
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
                 android:text="@string/demo_btn_outline" />
@@ -181,14 +181,14 @@
                 android:text="@string/demo_btn_disabled_hint" />
 
             <Button
-                style="@style/Btn.Capsule.Primary"
+                style="@style/Btn.Orange.Capsule.Emphasis"
                 android:layout_width="match_parent"
                 android:layout_marginTop="8dp"
                 android:enabled="false"
                 android:text="@string/demo_btn_primary" />
 
             <Button
-                style="@style/Btn.Capsule.Neutral"
+                style="@style/Btn.Gray.Capsule.Neutral"
                 android:layout_width="match_parent"
                 android:layout_marginTop="8dp"
                 android:enabled="false"

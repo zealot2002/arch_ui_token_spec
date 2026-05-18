@@ -26,7 +26,7 @@
 
 **Style 层的核心价值**：由设计师在 `styles_tv.xml`、`styles_button.xml` 中定义文字与按钮的**职能化**样式，研发在布局里只引用 `tv_*`、`Btn.*`，不再自行决定 `textColor` / `textSize` / 按钮形态。
 
-> **职能 ≠ 业务（系列铁律）**：`tv_black_1_size_15`、`Btn.Capsule.Primary` 命名的是**文本层级、按钮形态与强调档位**等 UI 职能，不是「商品标题」「下单支付」等业务场景。业务只决定**在哪个页面引用哪条职能样式**，不应反过来用业务名定义 Style——否则全公司都会陷入「每个页面一套按钮 Style、改主题改到崩溃」的通病。
+> **职能 ≠ 业务（系列铁律）**：`tv_black_1_size_15`、`Btn.Orange.Capsule.Emphasis` 命名的是**色系 + 文本层级 / 按钮形态 + 交互档位**等 UI 职能，不是「商品标题」「下单支付」等业务场景。业务只决定**在哪个页面引用哪条职能样式**，不应反过来用业务名定义 Style——否则全公司都会陷入「每个页面一套按钮 Style、改主题改到崩溃」的通病。
 
 > **跨平台**：`tv_*` / `Btn.*` 对应 iOS 的 `UIFont`+语义色组合、Web 的 typography utility class；同样应由设计系统维护，研发只引用。
 
@@ -227,18 +227,18 @@ Button Style 是「业务绑定」的重灾区。很多中大型团队的项目�
 
 ```xml
 <!-- 胶囊按钮 -->
-<style name="Btn.Capsule.Primary" parent="BaseButton">
+<style name="Btn.Orange.Capsule.Emphasis" parent="BaseButton">
     <item name="android:background">@drawable/sel_orange_interact_capsule_emphasis_default</item>
     <item name="android:textColor">@color/func_white_text_1</item>
 </style>
 
-<style name="Btn.Capsule.Neutral" parent="BaseButton">
+<style name="Btn.Gray.Capsule.Neutral" parent="BaseButton">
     <item name="android:background">@drawable/sel_gray_interact_capsule_neutral_default</item>
     <item name="android:textColor">@color/func_black_text_1</item>
 </style>
 
 <!-- 小尺寸按钮 -->
-<style name="Btn.Capsule.Small" parent="BaseButton">
+<style name="Btn.Orange.Capsule.Small" parent="BaseButton">
     <item name="android:minHeight">36dp</item>
     <item name="android:textSize">13sp</item>
     <item name="android:paddingLeft">16dp</item>
@@ -248,13 +248,13 @@ Button Style 是「业务绑定」的重灾区。很多中大型团队的项目�
 </style>
 
 <!-- 描边按钮 -->
-<style name="Btn.Outline.Primary" parent="BaseButton">
+<style name="Btn.Orange.Outline.Emphasis" parent="BaseButton">
     <item name="android:background">@drawable/sel_orange_interact_outline_emphasis_default</item>
     <item name="android:textColor">@color/func_orange_text_1</item>
 </style>
 ```
 
-`Btn.Capsule.Primary` 表达的是**胶囊形态 + 主强调档位**，登录页主按钮、收银台主按钮、活动页主按钮都应引用它；页面上的 `android:text` 写「登录」「支付」「立即参与」即可，**不要把业务写进 Style 名**。
+`Btn.Orange.Capsule.Emphasis` 表达的是**橙色 + 胶囊形态 + 强调档位**，与 Drawable `sel_orange_interact_capsule_emphasis_default` 同序（色系在前）；登录页、收银台、活动页主按钮都可引用，**不要把业务写进 Style 名**。
 
 ### 4.4 反例：业务型 Button Style 如何毁掉复用
 
@@ -266,14 +266,14 @@ Btn.Profile.EditSave
 Btn.Cart.CheckoutNow
 ```
 
-看似清晰，实则每个业务线各维护一套「主按钮」，设计改一版主色或圆角，要改几十个 Style、走查几十个页面。正确做法是收敛到 `Btn.Capsule.Primary`、`Btn.Capsule.Neutral`、`Btn.Outline.Primary` 等**职能命名**，与第二篇 Drawable 的 `sel_orange_interact_capsule_emphasis_default` 同一套思想。
+看似清晰，实则每个业务线各维护一套「主按钮」，设计改一版主色或圆角，要改几十个 Style、走查几十个页面。正确做法是收敛到 `Btn.Orange.Capsule.Emphasis`、`Btn.Gray.Capsule.Neutral`、`Btn.Orange.Outline.Emphasis` 等**职能命名**（**色系在形状之前**），与 Drawable `sel_orange_interact_capsule_emphasis_default` 字段顺序一致。
 
 | 维度 | 业务命名 | 职能命名 |
 |------|----------|----------|
 | 回答的问题 | 这是哪个页面的按钮？ | 这是什么形态、什么强调级别的按钮？ |
 | 能否跨页面复用 | ❌ 基本不能 | ✅ 全 App 复用 |
 | 主题/品牌升级 | 改多处、易遗漏 | 改 Style + token 即可 |
-| 典型名称 | `BtnOrderPay` | `Btn.Capsule.Primary` |
+| 典型名称 | `BtnOrderPay` | `Btn.Orange.Capsule.Emphasis` |
 
 ---
 
@@ -351,19 +351,19 @@ tv_{色系}_{档位}_size_{字号}
 ### 6.2 按钮 Style 命名
 
 ```
-Btn.{形状}.{类型}.{尺寸}
+Btn.{色系}.{形状}.{交互档位}[.Small]
 ```
 
-**示例**：
-- `Btn.Capsule.Primary`：胶囊主按钮
-- `Btn.Capsule.Neutral`：胶囊次按钮
-- `Btn.Outline.Primary`：描边主按钮
-- `Btn.Capsule.Primary.Small`：小尺寸胶囊主按钮
+**示例**（与 Drawable `sel_{色系}_…` 一致，**色系紧挨 Btn 前缀**）：
+- `Btn.Orange.Capsule.Emphasis`：橙色胶囊强调按钮
+- `Btn.Gray.Capsule.Neutral`：灰色胶囊中性按钮
+- `Btn.Orange.Outline.Emphasis`：橙色描边强调按钮
+- `Btn.Orange.Capsule.Small`：橙色胶囊小尺寸
 
 ### 6.3 命名原则
 
-1. **职能语义，而非业务语义**：`Primary` / `Neutral` / `black_1` 描述的是 UI 档位与色系，不是订单、登录、会员等业务模块
-2. **层次清晰**：通过分隔符体现继承关系（`tv_*` 正交组合，`Btn.{形状}.{类型}`）
+1. **职能语义，而非业务语义**：`Orange` / `Emphasis` / `black_1` 描述的是色系与 UI 档位，不是订单、登录、会员等业务模块
+2. **层次清晰**：`tv_{色系}_{档位}`；`Btn_{色系}_{形状}_{档位}`，色系位置与颜色层、Drawable 层对齐
 3. **易于搜索**：统一前缀便于 IDE 搜索；全团队共用同一套职能 Style，而不是每人发明业务名
 
 ---
@@ -450,7 +450,7 @@ Style 层不是简单的"属性集合"，而是**工程经验的沉淀和复用*
 1. **职能 ≠ 业务**：Style 只命名 UI 职能；业务场景只选择引用哪条 Style
 2. **最小化基础层**：tv_base 只定义 3 个必须属性
 3. **正交组合**：颜色和字号分开定义，灵活组合
-4. **按钮同样职能化**：`Btn.Capsule.Primary` 等全 App 复用，禁止 `BtnXxxBusiness` 式命名
+4. **按钮同样职能化**：`Btn.Orange.Capsule.Emphasis` 等全 App 复用，禁止 `BtnXxxBusiness` 式命名
 
 ### 预期收益
 

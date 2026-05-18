@@ -24,7 +24,9 @@
 
 我们分析了大量项目中的 TextView 使用情况，遵从 98% 的 TextView 的共性，提炼出 **3 个**必须封装进 `tv_base` 的基础属性（宽高、`includeFontPadding`）。
 
-**tv style 层的核心价值**：由设计师在 `styles_tv.xml` 中定义颜色与字号组合，研发在布局里只引用 `tv_*`，不再自行决定 `textColor` / `textSize`。
+**Style 层的核心价值**：由设计师在 `styles_tv.xml`、`styles_button.xml` 中定义文字与按钮的**职能化**样式，研发在布局里只引用 `tv_*`、`Btn.*`，不再自行决定 `textColor` / `textSize` / 按钮形态。
+
+> **职能 ≠ 业务（系列铁律）**：`tv_black_1_size_15`、`Btn.Capsule.Primary` 命名的是**文本层级、按钮形态与强调档位**等 UI 职能，不是「商品标题」「下单支付」等业务场景。业务只决定**在哪个页面引用哪条职能样式**，不应反过来用业务名定义 Style——否则全公司都会陷入「每个页面一套按钮 Style、改主题改到崩溃」的通病。
 
 > **跨平台**：`tv_*` / `Btn.*` 对应 iOS 的 `UIFont`+语义色组合、Web 的 typography utility class；同样应由设计系统维护，研发只引用。
 
@@ -195,6 +197,8 @@ flowchart TB
 
 ## 四、按钮 Style：同样的思路，不同的属性
 
+Button Style 是「业务绑定」的重灾区。很多中大型团队的项目里，你会看到 `BtnLoginSubmit`、`BtnOrderPay`、`BtnMemberOpen` 并排存在——它们往往只是胶囊主按钮的重复拷贝，圆角、字重、背景几乎一样，却**无法复用、无法统一换肤、无法做全 App 主题**。这是业内极其普遍的痛点；根因同样是把 **业务名当成了 Style 名**，而正确的命名只能落在 **职能** 上：主操作、次操作、描边强调、小尺寸等。
+
 ### 4.1 按钮必须的基础属性
 
 ```xml
@@ -249,6 +253,27 @@ flowchart TB
     <item name="android:textColor">@color/func_orange_text_1</item>
 </style>
 ```
+
+`Btn.Capsule.Primary` 表达的是**胶囊形态 + 主强调档位**，登录页主按钮、收银台主按钮、活动页主按钮都应引用它；页面上的 `android:text` 写「登录」「支付」「立即参与」即可，**不要把业务写进 Style 名**。
+
+### 4.4 反例：业务型 Button Style 如何毁掉复用
+
+```
+❌ 错误：Style 名承载业务
+Btn.Login.Submit
+Btn.Order.ConfirmPay
+Btn.Profile.EditSave
+Btn.Cart.CheckoutNow
+```
+
+看似清晰，实则每个业务线各维护一套「主按钮」，设计改一版主色或圆角，要改几十个 Style、走查几十个页面。正确做法是收敛到 `Btn.Capsule.Primary`、`Btn.Capsule.Neutral`、`Btn.Outline.Primary` 等**职能命名**，与第二篇 Drawable 的 `sel_orange_interact_capsule_emphasis_default` 同一套思想。
+
+| 维度 | 业务命名 | 职能命名 |
+|------|----------|----------|
+| 回答的问题 | 这是哪个页面的按钮？ | 这是什么形态、什么强调级别的按钮？ |
+| 能否跨页面复用 | ❌ 基本不能 | ✅ 全 App 复用 |
+| 主题/品牌升级 | 改多处、易遗漏 | 改 Style + token 即可 |
+| 典型名称 | `BtnOrderPay` | `Btn.Capsule.Primary` |
 
 ---
 
@@ -337,9 +362,9 @@ Btn.{形状}.{类型}.{尺寸}
 
 ### 6.3 命名原则
 
-1. **语义化**：看到名字就知道用途
-2. **层次清晰**：通过分隔符体现继承关系
-3. **易于搜索**：统一前缀便于 IDE 搜索
+1. **职能语义，而非业务语义**：`Primary` / `Neutral` / `black_1` 描述的是 UI 档位与色系，不是订单、登录、会员等业务模块
+2. **层次清晰**：通过分隔符体现继承关系（`tv_*` 正交组合，`Btn.{形状}.{类型}`）
+3. **易于搜索**：统一前缀便于 IDE 搜索；全团队共用同一套职能 Style，而不是每人发明业务名
 
 ---
 
@@ -422,9 +447,10 @@ Style 层不是简单的"属性集合"，而是**工程经验的沉淀和复用*
 
 ### 关键设计原则
 
-1. **最小化基础层**：tv_base 只定义 3 个必须属性
-2. **正交组合**：颜色和字号分开定义，灵活组合
-3. **语义化命名**：让使用者一目了然
+1. **职能 ≠ 业务**：Style 只命名 UI 职能；业务场景只选择引用哪条 Style
+2. **最小化基础层**：tv_base 只定义 3 个必须属性
+3. **正交组合**：颜色和字号分开定义，灵活组合
+4. **按钮同样职能化**：`Btn.Capsule.Primary` 等全 App 复用，禁止 `BtnXxxBusiness` 式命名
 
 ### 预期收益
 

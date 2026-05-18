@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ============ 按钮样式 ============ -->
+
+    <!-- 基础按钮通用父样式 -->
+    <style name="BaseButton" parent="android:Widget.Button">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <!-- ============ 胶囊按钮 ============ -->
+
+    <!-- 主色调胶囊按钮 -->
+    <style name="Btn.Capsule.Primary" parent="BaseButton">
+        <item name="android:background">@drawable/sel_orange_interact_capsule_emphasis_default</item>
+        <item name="android:textColor">@color/func_white_text_1</item>
+    </style>
+
+    <!-- 中性胶囊按钮 -->
+    <style name="Btn.Capsule.Neutral" parent="BaseButton">
+        <item name="android:background">@drawable/sel_gray_interact_capsule_neutral_default</item>
+        <item name="android:textColor">@color/func_black_text_1</item>
+    </style>
+
+    <!-- 小尺寸胶囊按钮 -->
+    <style name="Btn.Capsule.Small" parent="BaseButton">
+        <item name="android:minHeight">36dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:background">@drawable/sel_orange_interact_capsule_emphasis_default</item>
+        <item name="android:textColor">@color/func_white_text_1</item>
+    </style>
+
+    <style name="Btn.Capsule.Neutral.Small" parent="BaseButton">
+        <item name="android:minHeight">36dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:background">@drawable/sel_gray_interact_capsule_neutral_default</item>
+        <item name="android:textColor">@color/func_black_text_1</item>
+    </style>
+
+    <!-- ============ 扁平文字按钮 ============ -->
+
+    <!-- 主色调文字按钮 -->
+    <style name="Btn.Text.Primary" parent="BaseButton">
+        <item name="android:background">@drawable/sel_gray_interact_flat_neutral_default</item>
+        <item name="android:textColor">@color/func_orange_text_1</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <!-- 中性文字按钮 -->
+    <style name="Btn.Text.Neutral" parent="BaseButton">
+        <item name="android:background">@drawable/sel_gray_interact_flat_neutral_default</item>
+        <item name="android:textColor">@color/func_orange_text_1</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <!-- ============ 描边空心按钮 ============ -->
+
+    <!-- 主色调描边按钮 -->
+    <style name="Btn.Outline.Primary" parent="BaseButton">
+        <item name="android:background">@drawable/sel_orange_interact_outline_emphasis_default</item>
+        <item name="android:textColor">@color/func_orange_text_1</item>
+    </style>
+
+    <!-- 小尺寸描边按钮 -->
+    <style name="Btn.Outline.Small" parent="BaseButton">
+        <item name="android:minHeight">36dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:background">@drawable/sel_orange_interact_outline_emphasis_default</item>
+        <item name="android:textColor">@color/func_orange_text_1</item>
+    </style>
+
+</resources>

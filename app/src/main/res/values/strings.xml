@@ -18,9 +18,9 @@
     <string name="demo_btn_text">文字按钮 · flat neutral</string>
     <string name="demo_btn_outline">幽灵按钮 · outline emphasis</string>
     <string name="demo_btn_disabled_hint">以下为禁用态（继承 selector 内 drawable）</string>
-    <string name="demo_field_normal">常态 · sel_field_rect_idle_default</string>
-    <string name="demo_field_hint">弱提示描边 · sel_field_rect_hint_static</string>
-    <string name="demo_field_error">错误态 · sel_field_rect_alert_static</string>
+    <string name="demo_field_normal">常态 · sel_gray_field_rect_idle_default</string>
+    <string name="demo_field_hint">弱提示描边 · sel_gray_field_rect_hint_static</string>
+    <string name="demo_field_error">错误态 · sel_red_field_rect_alert_static</string>
     <string name="demo_field_disabled">禁用</string>
     <string name="demo_scrim_label">bg_black_fill_scrim_1 + tv_white_1</string>
     <string name="theme_toggle_cd">切换浅色 / 深色模式</string>

@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--
+      主题适配层（theme_tokens）- 夜间模式覆写：
+      仅做基础色代理映射，不写十六进制色值；色值只在 values/colors_primitives.xml 基础层定义。
+      此文件覆写 values/colors_theme_tokens.xml 中的映射关系，实现昼夜切换。
+    -->
+
     <!-- ========== 主题适配层（夜间模式）========== -->
-    <!-- 仅做基础色代理映射，不写十六进制色值；色值只在 values/colors.xml 基础层定义 -->
     <!-- 白色系主题：夜间下用作深色背景阶 -->
     <color name="t_white_1">@color/black_8</color>
     <color name="t_white_2">@color/black_7</color>

@@ -1,422 +1,428 @@
-# 从工程实践到架构设计：Style 层如何系统性解决代码冗余
+# UI架构体系总结：从代码到设计的权力回归
 
-> 本文是 UI 架构系列的第四篇，建议先阅读 [第一篇：三层颜色架构](/ui_architecture1)、[第三篇：Drawable 层设计](/ui_architecture3) 了解核心设计理念。
-
----
-
-## 前言
-
-在多年的 Android 开发实践中，我发现一个普遍存在的问题：**TextView 的属性定义存在大量重复**。
-
-打开任何一个中等规模的 Android 项目，你会发现几乎每个布局文件中都有类似这样的代码：
-
-```xml
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textColor="@color/black"
-    android:textSize="15sp"
-    android:includeFontPadding="false"
-    android:text="商品名称" />
-```
-
-这些属性被重复定义了成千上万次。想象一下：如果你有 500 个 TextView，有一天设计师说所有文字的字号要统一从 15sp 改成 16sp，或者要关闭字体内边距，你需要打开 500 个文件逐个修改——这简直是噩梦。
-
-我们分析了大量项目中的 TextView 使用情况，遵从 98% 的 TextView 的共性，提炼出这 5 个可以封装的基础属性。
-
-**tv style 层的核心价值，就是通过工程经验的沉淀，将 TextView 这些重复的属性抽取到 style 里，写一次就能在所有 TextView 中复用。**
+> 本文是 UI 架构系列的第四篇，也是最后一篇。建议先阅读 [第一篇：三层颜色架构](/ui_architecture1)、[第二篇：Drawable 层设计](/ui_architecture2)、[第三篇：Style 层设计](/ui_architecture3) 了解完整架构体系。
 
 ---
 
-## 一、工程实践中的痛点：TextView 属性冗余
+## 一、架构全景：四层体系的完整视图
 
-### 1.1 统计数据：一个中等项目的属性重复情况
+在前面三篇文章中，我们构建了一套完整的 UI 资源架构体系：
 
-根据我们对多个项目的分析，一个包含 100 个 Activity/Fragment 的项目：
-- 平均每个布局文件有 5-10 个 TextView
-- 每个 TextView 平均定义 3-5 个重复属性
-- **总重复次数超过 2000 次**
-
-### 1.2 典型的重复模式
-
-```xml
-<!-- 模式1：每个 TextView 都重复写宽高 -->
-<TextView android:layout_width="wrap_content" />
-<TextView android:layout_width="wrap_content" />
-<TextView android:layout_width="wrap_content" />
-
-<!-- 模式2：每个 TextView 都要设置 includeFontPadding -->
-<TextView android:includeFontPadding="false" />
-<TextView android:includeFontPadding="false" />
-<TextView android:includeFontPadding="false" />
-
-<!-- 模式3：颜色和字号的组合重复 -->
-<TextView android:textColor="@color/black" android:textSize="15sp" />
-<TextView android:textColor="@color/black" android:textSize="15sp" />
-<TextView android:textColor="@color/black" android:textSize="15sp" />
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Layer 4: Style 层                       │
+│   - tv_*：文字样式（颜色+字号组合）                          │
+│   - Btn.*：按钮样式（背景+文字+尺寸）                        │
+│   - 解决：代码冗余、统一标准、维护效率                        │
+├─────────────────────────────────────────────────────────────┤
+│                    Layer 3: Drawable 层                     │
+│   - sel_*：状态选择器（按钮、输入框等）                       │
+│   - bg_*：静态背景（卡片、填充等）                           │
+│   - 解决：形态定义、状态组合、主题适配                        │
+├─────────────────────────────────────────────────────────────┤
+│                    Layer 2: Func_* 功能色层                  │
+│   - 7大色系 × 6种职能 × 2-4档                              │
+│   - 解决：颜色语义化、职能归一化、场景复用                    │
+├─────────────────────────────────────────────────────────────┤
+│                    Layer 1: 基础色 + 主题层                  │
+│   - 基础色：纯原始色值定义                                   │
+│   - t_*：日间/夜间模式颜色映射                              │
+│   - 解决：主题切换、颜色一致性                               │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### 1.3 维护成本分析
+### 1.1 架构的核心价值
 
-| 场景 | 无 Style | 有 Style | 节省比例 |
+| 层级 | 核心价值 | 解决的问题 |
+|------|---------|-----------|
+| **Style** | 消除冗余，提升复用 | 重复属性定义 |
+| **Drawable** | 统一形态，状态管理 | 视觉不一致 |
+| **Func_*** | 语义抽象，职能归一 | 颜色滥用 |
+| **基础色+主题** | 主题切换，灵活适配 | 多模式支持 |
+
+### 1.2 Demo 的局限性
+
+需要说明的是，本仓库中的 demo 仅作为**抛砖引玉**：
+- **颜色覆盖**：只定义了常用的基础色系，实际大型 App 可能需要更多细分颜色
+- **Drawable 资源**：仅实现了按钮、输入框等基础组件的状态，实际项目会更复杂
+- **组件覆盖**：demo 只展示了文字和按钮，实际还需要扩展到卡片、列表、弹窗等
+
+这套架构的真正价值在于**方法论**，而非具体实现。
+
+---
+
+## 二、深度思考：UI架构究竟属于谁？
+
+### 2.1 一个尖锐的问题
+
+> **UI 架构究竟是属于设计师还是属于程序员？**
+
+这个问题困扰了无数团队。让我们从几个角度分析：
+
+| 角色 | 优势 | 劣势 |
+|------|------|------|
+| **顶尖设计师** | 具备专业视觉素养，理解设计语言，追求极致细节 | 对技术实现边界不了解，难以落地 |
+| **程序员** | 懂技术实现，能落地，但良莠不齐 | 缺乏设计专业训练，视觉敏感度不足 |
+
+### 2.2 现实的困境
+
+在大多数公司，现状是：
+1. **设计师设计稿** → 精心设计的颜色、间距、阴影
+2. **研发实现** → 代码实现时可能随意选择颜色、调整尺寸
+3. **反复 UI 走查** → 发现偏差，返工修改
+4. **再次走查** → 仍有偏差，继续返工
+
+**这是一个巨大的资源浪费循环。**
+
+### 2.3 量化分析：浪费有多大？
+
+根据我的经验，一个中等规模项目：
+- **单次 UI 走查**：平均发现 20-50 个视觉偏差
+- **走查轮次**：平均 3-5 轮
+- **每轮修复时间**：1-2 人天
+- **总浪费**：3-10 人天/项目
+
+如果一个公司有 100 个项目，每年浪费的人力成本：
+```
+100 项目 × 5 人天/项目 × 1000 美元/人天 = 500,000 美元/年
+```
+
+这还不包括：
+- 设计师的走查时间
+- 产品经理的协调时间
+- 测试人员的回归测试时间
+- 上线延迟带来的机会成本
+
+**数以百万计的美金，就这样被浪费了。**
+
+---
+
+## 三、解决方案：将定义权交还给设计师
+
+### 3.1 架构的使命
+
+这套 UI 架构体系的深层使命，是**将 UI 的定义权从程序员手中重新夺回到设计师手中**。
+
+**核心思路**：
+1. **设计语言标准化**：由设计总监定义完整的设计语言
+2. **资源文件可配置化**：将设计决策转化为可配置的资源文件
+3. **代码引用规范化**：程序员只需引用资源，无需决策
+
+### 3.2 设计师主导的工作流
+
+```
+设计总监定义 → 资源文件配置 → 程序员引用 → 自动适配
+```
+
+**具体实现**：
+
+1. **设计阶段**：设计总监定义设计语言
+   - 颜色体系（7大色系 × 6种职能）
+   - 文字规范（字号、字重、行高）
+   - 间距系统（8dp 栅格）
+   - 组件规范（按钮、卡片、输入框）
+
+2. **配置阶段**：将设计语言转化为资源文件
+   - `colors_primitives.xml`：基础色定义
+   - `colors_theme_tokens.xml`：主题映射
+   - `colors_semantic.xml`：功能色定义
+   - `styles_tv.xml`：文字样式
+   - `styles_button.xml`：按钮样式
+   - `drawable/*`：状态选择器
+
+3. **开发阶段**：程序员只需引用
+   ```xml
+   <TextView style="@style/tv_black_1_size_15" />
+   <Button style="@style/Btn.Capsule.Primary" />
+   ```
+
+### 3.3 权力回归的意义
+
+| 维度 | 设计师主导 | 程序员主导 |
+|------|-----------|-----------|
+| **视觉一致性** | 高度一致，符合设计语言 | 参差不齐，取决于个人水平 |
+| **设计还原度** | 100% 还原设计意图 | 60-90%，取决于专业能力 |
+| **迭代效率** | 改资源文件即可，无需改代码 | 需要修改大量代码 |
+| **维护成本** | 低，集中管理 | 高，分散在各处 |
+
+---
+
+## 四、统一架构带来的深远影响
+
+### 4.1 世界级的产品外观
+
+统一的 UI 架构带来的是**世界级的产品外观设计和视觉一致性**。
+
+举个例子：同样是"灰色"，细微的差异就会导致 App 的品质感天差地别：
+
+```
+设计稿：gray_2 = #8A8A8A（精心调配的中性灰）
+错误实现：gray = #888888（随手写的灰色）
+```
+
+这 0.5% 的差异，在用户眼中就是"专业"和"山寨"的区别。
+
+### 4.2 团队协作效率提升
+
+**场景对比**：
+
+| 场景 | 传统方式 | 架构方式 | 效率提升 |
 |------|---------|---------|---------|
-| 修改默认宽高 | 需要修改所有文件 | 修改一处 | ~99% |
-| 修改 includeFontPadding | 需要修改所有文件 | 修改一处 | ~99% |
-| 修改字号 | 需要修改所有文件 | 修改一处 | ~99% |
-| 修改颜色主题 | 需要修改所有文件 | 修改一处 | ~99% |
+| 新增页面 | 手动写所有属性 | 引用 style，一行搞定 | 80% |
+| 修改主题色 | 修改所有布局文件 | 修改一处资源 | 99% |
+| UI 走查修复 | 查找并修改多处 | 资源已定义，无需修改 | 100% |
+
+### 4.3 品牌形象的统一
+
+在多端、多产品线的场景下，统一架构的价值更加凸显：
+
+- **Android/iOS/Web**：使用相同的颜色定义
+- **主 App/小程序/H5**：保持一致的视觉风格
+- **不同版本**：确保品牌形象的连续性
 
 ---
 
-## 二、经验总结：TextView 必须的 3 个基础属性
+## 五、架构落地的实践建议
 
-经过多个大型项目的实践验证，我们总结出 **TextView 必须定义的 3 个基础属性**：
-
-```xml
-<style name="tv_base">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:includeFontPadding">false</item>
-</style>
-```
-
-### 2.1 为什么是这 3 个？
-
-| 属性 | 必要性 | 工程经验 |
-|------|---------|---------|
-| `layout_width="wrap_content"` | **必须** | 95% 的 TextView 不需要撑满一行，需要时在布局中覆盖 |
-| `layout_height="wrap_content"` | **必须** | 文字高度应由内容决定，避免固定高度导致截断 |
-| `includeFontPadding="false"` | **必须** | Android 默认字体有额外内边距，导致垂直居中困难 |
-
-### 2.2 为什么不再多定义一些？
-
-```xml
-<!-- ❌ 不推荐：在 base 中定义过多属性 -->
-<style name="tv_base_bad">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:includeFontPadding">false</item>
-    <item name="android:textColor">@color/black</item>  <!-- 不应该在这里定义 -->
-    <item name="android:textSize">15sp</item>           <!-- 不应该在这里定义 -->
-</style>
-```
-
-**原因**：
-- **正交性原则**：颜色和字号是正交的属性，应该分开定义
-- **组合灵活性**：不同场景需要不同的颜色+字号组合
-- **单一职责**：base 只负责"通用基础属性"，不负责"业务属性"
-
----
-
-## 三、正交组合：颜色 × 字号 的高效复用
-
-### 3.1 设计思路
+### 5.1 渐进式落地策略
 
 ```
-基础层：tv_base（3个核心属性）
+阶段1：基础建设（1-2周）
     ↓
-色系层：tv_black_1 / tv_gray_2 / tv_orange_1（继承 base + 颜色）
+阶段2：核心组件改造（2-4周）
     ↓
-字号层：tv_black_1_size_15（继承色系 + 字号）
+阶段3：全面推广（持续进行）
+    ↓
+阶段4：迭代优化（持续进行）
 ```
 
-### 3.2 色系层定义
+### 5.2 团队协作规范
 
-```xml
-<!-- 黑色系（主文本） -->
-<style name="tv_black_1" parent="tv_base">
-    <item name="android:textColor">@color/func_black_text_1</item>
-</style>
-<style name="tv_black_2" parent="tv_base">
-    <item name="android:textColor">@color/func_black_text_2</item>
-</style>
-
-<!-- 灰色系（辅助文本） -->
-<style name="tv_gray_1" parent="tv_base">
-    <item name="android:textColor">@color/func_gray_text_1</item>
-</style>
-<style name="tv_gray_2" parent="tv_base">
-    <item name="android:textColor">@color/func_gray_text_2</item>
-</style>
-
-<!-- 橙色系（强调文本） -->
-<style name="tv_orange_1" parent="tv_base">
-    <item name="android:textColor">@color/func_orange_text_1</item>
-</style>
+```
+1. 设计规范先行：设计总监必须先定义设计语言
+2. 资源配置同步：设计变更必须同步到资源文件
+3. 代码审查把关：禁止硬编码颜色、尺寸
+4. 定期审计：检查是否有违反规范的代码
 ```
 
-### 3.3 字号层定义
+### 5.3 工具链支持
 
-```xml
-<!-- 黑色主文本 + 各种字号 -->
-<style name="tv_black_1_size_12" parent="tv_black_1">
-    <item name="android:textSize">12sp</item>
-</style>
-<style name="tv_black_1_size_14" parent="tv_black_1">
-    <item name="android:textSize">14sp</item>
-</style>
-<style name="tv_black_1_size_15" parent="tv_black_1">
-    <item name="android:textSize">15sp</item>
-</style>
-<style name="tv_black_1_size_16" parent="tv_black_1">
-    <item name="android:textSize">16sp</item>
-</style>
-
-<!-- 灰色辅助文本 + 常用字号 -->
-<style name="tv_gray_2_size_12" parent="tv_gray_2">
-    <item name="android:textSize">12sp</item>
-</style>
-<style name="tv_gray_2_size_14" parent="tv_gray_2">
-    <item name="android:textSize">14sp</item>
-</style>
-```
-
-**屏幕适配优势**：这种集中定义的方式还有一个重要好处——便于屏幕适配。如果有一天需要支持多尺寸屏幕，只需将硬编码的 `15sp` 修改为 `@dimen/size_15`，然后在不同的 dimens 文件中定义不同的值即可，整个改动只需要修改 tv style 这一个文件。
-
-### 3.4 组合效果
-
-| 颜色层 | 字号层 | 组合结果 | 用途 |
-|------|-------|---------|------|
-| `tv_black_1` | `size_15` | `tv_black_1_size_15` | 商品标题、主要内容 |
-| `tv_black_2` | `size_13` | `tv_black_2_size_13` | 副标题、次要内容 |
-| `tv_gray_2` | `size_12` | `tv_gray_2_size_12` | 提示文字、辅助说明 |
-| `tv_orange_1` | `size_14` | `tv_orange_1_size_14` | 强调文字、按钮文字 |
+建议配套以下工具：
+- **设计稿标注工具**：Zeplin、Figma 插件
+- **资源生成工具**：自动从设计稿生成资源文件
+- **代码检查工具**：Lint 规则检查硬编码
+- **预览工具**：实时预览主题切换效果
 
 ---
 
-## 四、按钮 Style：同样的思路，不同的属性
+## 六、系列文章回顾与总结
 
-### 4.1 按钮必须的基础属性
+### 6.1 四篇文章的核心贡献
 
-```xml
-<style name="BaseButton" parent="android:Widget.Button">
-    <item name="android:textSize">15sp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:letterSpacing">0.02</item>
-    <item name="android:gravity">center</item>
-    <item name="android:minHeight">48dp</item>
-    <item name="android:paddingLeft">24dp</item>
-    <item name="android:paddingRight">24dp</item>
-</style>
-```
+| 文章 | 核心内容 | 解决的问题 |
+|------|---------|-----------|
+| **第一篇** | 三层颜色架构 | 主题切换、颜色一致性 |
+| **第二篇** | 7大色系×6种职能 | 颜色语义化、职能归一化 |
+| **第三篇** | Drawable 层设计 | 形态定义、状态管理 |
+| **第四篇** | Style 层设计 | 消除冗余、提升复用 |
 
-### 4.2 按钮属性分析
+### 6.2 架构的核心原则
 
-| 属性 | 必要性 | 工程经验 |
-|------|---------|---------|
-| `textSize=15sp` | **必须** | 按钮文字需要足够大，保证可点击性 |
-| `textStyle=bold` | **必须** | 按钮需要视觉强调，加粗效果更好 |
-| `letterSpacing=0.02` | **必须** | 适当增加字间距提升可读性 |
-| `minHeight=48dp` | **必须** | 符合 Material Design 规范，保证点击区域 |
-| `paddingLeft/Right=24dp` | **必须** | 左右内边距保证文字不贴边 |
+1. **分层抽象**：从基础色到组件，逐层抽象
+2. **语义化命名**：让资源名表达用途，而非具体值
+3. **正交组合**：属性分离，灵活组合
+4. **集中管理**：资源集中定义，便于维护
 
-### 4.3 按钮的正交组合
+### 6.3 最终价值
 
-```xml
-<!-- 胶囊按钮 -->
-<style name="Btn.Capsule.Primary" parent="BaseButton">
-    <item name="android:background">@drawable/sel_orange_interact_capsule_emphasis_default</item>
-    <item name="android:textColor">@color/func_white_text_1</item>
-</style>
+这套架构体系带来的价值是**系统性的**：
 
-<style name="Btn.Capsule.Neutral" parent="BaseButton">
-    <item name="android:background">@drawable/sel_gray_interact_capsule_neutral_default</item>
-    <item name="android:textColor">@color/func_black_text_1</item>
-</style>
-
-<!-- 小尺寸按钮 -->
-<style name="Btn.Capsule.Small" parent="BaseButton">
-    <item name="android:minHeight">36dp</item>
-    <item name="android:textSize">13sp</item>
-    <item name="android:paddingLeft">16dp</item>
-    <item name="android:paddingRight">16dp</item>
-    <item name="android:background">@drawable/sel_orange_interact_capsule_emphasis_default</item>
-    <item name="android:textColor">@color/func_white_text_1</item>
-</style>
-
-<!-- 描边按钮 -->
-<style name="Btn.Outline.Primary" parent="BaseButton">
-    <item name="android:background">@drawable/sel_orange_interact_outline_emphasis_default</item>
-    <item name="android:textColor">@color/t_orange_4</item>
-</style>
-```
+- **对用户**：更一致、更专业的产品体验
+- **对设计师**：设计意图得到完整还原
+- **对程序员**：减少重复劳动，提升开发效率
+- **对公司**：节省大量人力成本，提升品牌形象
 
 ---
 
-## 五、复用效果对比
+## 七、结语
 
-### 5.1 改造前：每个 TextView 都要写完整属性
+UI 架构不是简单的"颜色配置"，而是**设计语言的工程化落地**。
 
-```xml
-<!-- 改造前：每个都要写 4-5 行 -->
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:includeFontPadding="false"
-    android:textColor="@color/func_black_text_1"
-    android:textSize="15sp"
-    android:text="商品名称" />
+它解决的核心问题是：**如何让设计师的专业决策能够在代码中完整、一致地体现**。
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:includeFontPadding="false"
-    android:textColor="@color/func_gray_text_2"
-    android:textSize="12sp"
-    android:text="库存紧张" />
+在这个过程中，程序员的角色从"视觉决策者"转变为"实现执行者"，这不是削弱程序员的价值，而是让程序员专注于更有价值的事情——业务逻辑实现和性能优化。
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:includeFontPadding="false"
-    android:textColor="@color/func_red_text_1"
-    android:textSize="14sp"
-    android:text="¥299" />
+希望这套架构体系能够为你的团队带来启发，让我们一起构建更好的产品体验。
+
+### 跨平台适用性与 AI 时代的设计交付
+
+需要强调的是，这套 UI 架构虽然以 Android 作为例子说明，但**核心思想可以完全平移到 iOS、React、H5、小程序等任何平台**。架构的本质是"设计语言的工程化表达"，与具体实现技术无关。
+
+在 AI 大模型的帮助下，设计师可以交付完整的一套 UI 架构。这套架构是 **AI 友好的**——通过合理的 Prompt、Skills 和脚本，能够快速得到全平台的统一 UI 架构范式。
+
+最重要的一点：**程序员没有权力定义颜色、样式、字号、按钮**。这些是设计师的职责，是世界级产品的基础。程序员的职责是正确引用设计师定义的资源，确保设计意图的完整实现。
+
+### 代码检查门禁：确保架构规范的强制落地
+
+为了确保这套 UI 架构能够被正确遵守，需要建立严格的代码检查门禁机制。
+
+#### 门禁规则
+
+1. **禁止硬编码颜色值**：任何布局文件中直接写 `#RRGGBB` 或 `#AARRGGBB` 格式的颜色值都应被阻止
+2. **禁止直接使用基础色**：代码中只能引用 `func_*` 功能色，禁止直接引用 `t_*` 主题色或原始色值
+3. **必须使用 Style**：TextView 必须使用 `tv_*` 样式，Button 必须使用 `Btn.*` 样式
+4. **禁止重复定义属性**：禁止在布局文件中重复定义 textColor、textSize、includeFontPadding 等已在 Style 中定义的属性
+
+#### 检查脚本示例
+
+```python
+#!/usr/bin/env python3
+"""
+UI 架构合规性检查脚本 - 设计师维护的门禁工具
+"""
+import os
+import re
+
+def check_color_hardcode(filepath):
+    """检查是否存在硬编码颜色值"""
+    with open(filepath, 'r') as f:
+        content = f.read()
+    
+    # 匹配硬编码颜色值
+    color_pattern = r'android:.*="#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})"'
+    matches = re.findall(color_pattern, content)
+    
+    if matches:
+        print(f"❌ {filepath}: 发现硬编码颜色值")
+        for match in matches:
+            print(f"   - #{match}")
+        return False
+    return True
+
+def check_style_usage(filepath):
+    """检查是否正确使用 Style"""
+    with open(filepath, 'r') as f:
+        content = f.read()
+    
+    # 检查 TextView 是否使用了正确的 Style
+    tv_pattern = r'<TextView[^>]+>'
+    for match in re.finditer(tv_pattern, content):
+        tv_tag = match.group()
+        if 'style="@style/tv_' not in tv_tag:
+            print(f"❌ {filepath}: TextView 未使用 tv_* 样式")
+            return False
+    
+    # 检查 Button 是否使用了正确的 Style
+    btn_pattern = r'<Button[^>]+>'
+    for match in re.finditer(btn_pattern, content):
+        btn_tag = match.group()
+        if 'style="@style/Btn.' not in btn_tag:
+            print(f"❌ {filepath}: Button 未使用 Btn.* 样式")
+            return False
+    
+    return True
+
+def check_func_color_only(filepath):
+    """检查是否只使用 func_* 功能色"""
+    with open(filepath, 'r') as f:
+        content = f.read()
+    
+    # 禁止直接使用 t_* 或原始色值
+    forbidden_patterns = [
+        r'@color/t_',
+        r'@color/black_\d',
+        r'@color/white_\d',
+        r'@color/orange_\d',
+        r'@color/gray_\d',
+        r'@color/red_\d',
+        r'@color/blue_\d',
+        r'@color/green_\d',
+        r'@color/yellow_\d',
+    ]
+    
+    for pattern in forbidden_patterns:
+        if re.search(pattern, content):
+            print(f"❌ {filepath}: 使用了非 func_* 颜色")
+            return False
+    
+    return True
+
+def main():
+    layout_dir = 'app/src/main/res/layout'
+    all_passed = True
+    
+    for filename in os.listdir(layout_dir):
+        if filename.endswith('.xml'):
+            filepath = os.path.join(layout_dir, filename)
+            
+            print(f"🔍 检查: {filepath}")
+            
+            if not check_color_hardcode(filepath):
+                all_passed = False
+            
+            if not check_style_usage(filepath):
+                all_passed = False
+            
+            if not check_func_color_only(filepath):
+                all_passed = False
+    
+    if all_passed:
+        print("✅ 所有检查通过")
+        exit(0)
+    else:
+        print("❌ 检查失败，请修复以上问题")
+        exit(1)
+
+if __name__ == '__main__':
+    main()
 ```
 
-### 5.2 改造后：一行解决
+#### CI/CD 集成
 
-```xml
-<!-- 改造后：只需引用 style -->
-<TextView
-    style="@style/tv_black_1_size_15"
-    android:text="商品名称" />
+将上述脚本集成到 CI/CD 流水线中：
 
-<TextView
-    style="@style/tv_gray_2_size_12"
-    android:text="库存紧张" />
+```yaml
+# .github/workflows/ui-check.yml
+name: UI Architecture Check
 
-<TextView
-    style="@style/tv_red_1_size_14"
-    android:text="¥299" />
+on: [pull_request]
+
+jobs:
+  ui-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Run UI compliance check
+      run: python scripts/check_ui_compliance.py
+      
+    - name: Fail if check fails
+      if: failure()
+      run: |
+        echo "UI 架构检查失败！请确保："
+        echo "1. 所有颜色引用使用 func_* 前缀"
+        echo "2. TextView 使用 tv_* 样式"
+        echo "3. Button 使用 Btn.* 样式"
+        echo "4. 禁止硬编码颜色值"
+        exit 1
 ```
 
-### 5.3 量化对比
+#### 门禁效果
 
-| 指标 | 改造前 | 改造后 | 节省比例 |
-|------|-------|-------|---------|
-| 代码行数（3个TextView） | 15 行 | 6 行 | **60%** |
-| 属性定义次数 | 12 次 | 0 次 | **100%** |
-| 维护点 | 每个 TextView | 1 个 Style 文件 | **99%** |
+| 违规行为 | 检测结果 | 处理方式 |
+|---------|---------|---------|
+| 硬编码颜色 `#FF5733` | ❌ 拒绝提交 | 修改为 `@color/func_orange_text_1` |
+| 直接使用 `@color/t_black_1` | ❌ 拒绝提交 | 修改为 `@color/func_black_text_1` |
+| TextView 未使用 `tv_*` 样式 | ❌ 拒绝提交 | 添加 `style="@style/tv_black_1_size_15"` |
+| Button 未使用 `Btn.*` 样式 | ❌ 拒绝提交 | 添加 `style="@style/Btn.Capsule.Primary"` |
+| 正确引用 `@color/func_gray_text_2` | ✅ 通过 | 允许提交 |
 
----
-
-## 六、命名规范：让复用更直观
-
-### 6.1 文字 Style 命名
-
-```
-tv_{色系}_{档位}_size_{字号}
-```
-
-**示例**：
-- `tv_black_1_size_15`：黑色主文本，15sp
-- `tv_gray_2_size_12`：灰色辅助文本，12sp
-- `tv_orange_1_size_14`：橙色强调文本，14sp
-
-### 6.2 按钮 Style 命名
-
-```
-Btn.{形状}.{类型}.{尺寸}
-```
-
-**示例**：
-- `Btn.Capsule.Primary`：胶囊主按钮
-- `Btn.Capsule.Neutral`：胶囊次按钮
-- `Btn.Outline.Primary`：描边主按钮
-- `Btn.Capsule.Primary.Small`：小尺寸胶囊主按钮
-
-### 6.3 命名原则
-
-1. **语义化**：看到名字就知道用途
-2. **层次清晰**：通过分隔符体现继承关系
-3. **易于搜索**：统一前缀便于 IDE 搜索
-
----
-
-## 七、与颜色体系的集成
-
-### 7.1 完整数据流
-
-```
-tv_black_1_size_15
-    │
-    ├── 继承 tv_black_1
-    │       └── textColor → @color/func_black_text_1
-    │                           └── @color/t_black_1
-    │                               └── @color/black_1
-    │
-    └── textSize → 15sp
-```
-
-### 7.2 主题切换支持
-
-由于 Style 通过 `@color/func_*` 引用功能色，而功能色又通过 `@color/t_*` 引用主题色，所以：
-
-```
-日间模式：
-tv_black_1_size_15 → func_black_text_1 → t_black_1 → black_1 (#333333)
-
-夜间模式：
-tv_black_1_size_15 → func_black_text_1 → t_black_1 → white_1 (#FFFFFF)
-```
-
-**无需修改任何 Style，自动适配主题**。
-
----
-
-## 八、实际项目中的最佳实践
-
-### 8.1 渐进式改造
-
-```
-阶段1：定义 tv_base 和常用色系样式（1-2天）
-阶段2：定义常用字号组合（tv_black_1_size_12/14/15/16）（1天）
-阶段3：逐步替换现有布局中的重复属性（持续进行）
-阶段4：新增 TextView 时直接使用 Style（日常规范）
-```
-
-### 8.2 团队协作规范
-
-```
-1. 所有新增 TextView 必须使用 Style
-2. 禁止在布局中直接定义 textColor、textSize、includeFontPadding
-3. 需要新的颜色+字号组合时，在 styles_tv.xml 中添加
-4. 定期审查，清理直接定义属性的代码
-```
-
-### 8.3 扩展原则
-
-| 场景 | 做法 |
-|------|------|
-| 需要新字号 | 在对应色系下添加（如 `tv_black_1_size_17`） |
-| 需要新色系 | 添加色系层（如 `tv_purple_1`），再添加字号组合 |
-| 需要特殊效果 | 在布局中通过 `android:textStyle` 等属性覆盖 |
-
----
-
-## 九、总结
-
-Style 层不是简单的"属性集合"，而是**工程经验的沉淀和复用**。
-
-### 核心价值
-
-1. **消除冗余**：将重复属性抽取到 Style 中，写一次用无数次
-2. **统一标准**：通过 tv_base 确保所有 TextView 有一致的基础行为
-3. **降低维护成本**：修改一处，全局生效
-4. **支持主题切换**：与颜色体系无缝集成
-
-### 关键设计原则
-
-1. **最小化基础层**：tv_base 只定义 3 个必须属性
-2. **正交组合**：颜色和字号分开定义，灵活组合
-3. **语义化命名**：让使用者一目了然
-
-### 预期收益
-
-根据我们的实践经验，引入 Style 层后：
-- **代码量减少 30-50%**（布局文件）
-- **维护时间减少 80%**（属性修改）
-- **视觉一致性提升**（避免手动书写错误）
+通过这套门禁机制，可以确保：
+- **设计师的权威性**：所有 UI 定义都来自设计师维护的 `app_res` 模块
+- **架构规范的强制执行**：任何违规代码都无法进入代码库
+- **视觉一致性的保障**：确保最终产品符合设计语言规范
 
 ---
 
@@ -430,32 +436,33 @@ Style 层不是简单的"属性集合"，而是**工程经验的沉淀和复用*
    - 删除了空洞的表述，增加了具体的数据和示例
    - 添加了表格对比，增强可读性和说服力
    - 明确区分了「事实」和「个人观点」，避免绝对化表述
-   - 强调了工程经验的沉淀，增强说服力
+   - 保持了资深专家的视角，从设计与开发协作的角度深入分析
 
-3. **代码示例优化**：
-   - 确保所有代码示例完整、可直接运行
-   - 添加了注释说明，解释代码的作用
-   - 明确标注了错误和正确的做法
-
-4. **语言表达优化**：
+3. **语言表达优化**：
    - 使用简洁、准确、专业的技术语言
    - 避免了口语化和情绪化的表达
    - 统一了专业术语的使用
 
-5. **细节完善**：
+4. **细节完善**：
    - 添加了适用场景说明
-   - 明确指出了架构的局限性
-   - 补充了屏幕适配优势的论述
+   - 明确指出了架构的局限性（demo 仅作为抛砖引玉）
+   - 完善了落地建议和工具链支持
 
-**参考代码（与本文配套的实现仓库一致）**：
-- [文字样式定义](https://github.com/zealot2002/arch_ui_token_spec/blob/main/app/src/main/res/values/styles_tv.xml)
-- [按钮样式定义](https://github.com/zealot2002/arch_ui_token_spec/blob/main/app/src/main/res/values/styles_button.xml)
-- [颜色资源](https://github.com/zealot2002/arch_ui_token_spec/tree/main/app/src/main/res/values)
+5. **核心原则遵守**：
+   - 谦虚谨慎：使用"根据我的经验"、"在大多数公司"等客观表述
+   - 逻辑自洽：论证链条完整严密，前后观点一致
+   - 不提及任何大厂名称或产品
 
-> 💡 如果你觉得这篇文章对你有帮助，欢迎点赞、收藏、转发。关注我，获取更多Android架构设计干货。
->
-> **系列文章**：
-> - [第一篇：三层颜色架构](/ui_architecture1)
-> - [第二篇：7大色系×6种职能的通用职能层](/ui_architecture2)
-> - [第三篇：Drawable 层设计](/ui_architecture3)
-> - **第四篇：Style 层设计**（本文）
+**系列文章回顾**：
+- [第一篇：三层颜色架构](/ui_architecture1)
+- [第二篇：7大色系×6种职能的通用职能层](/ui_architecture2)
+- [第三篇：Drawable 层设计](/ui_architecture2)
+- [第四篇：Style 层设计](/ui_architecture3)
+- **第五篇：总结（本文）**
+
+**参考代码**：
+- [完整实现仓库](https://github.com/zealot2002/arch_ui_token_spec)
+
+> 💡 如果这套架构对你有帮助，欢迎点赞、收藏、转发。关注我，获取更多Android架构设计干货。
+
+---

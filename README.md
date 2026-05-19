@@ -14,7 +14,9 @@
 
 ## 架构概览
 
-![UI 资源架构全景](screenshot/mermaid-diagram.png)
+<p align="center">
+  <img src="screenshot/mermaid-diagram.png" width="200" alt="UI 资源架构全景">
+</p>
 
 | 层级 | 职责 | 典型命名 |
 |------|------|----------|

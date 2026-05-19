@@ -1,4 +1,4 @@
-# 现代化 UI 架构：Drawable 层规范与工程实践
+# Modern UI Architecture (Part 2): Drawable Layer Conventions — 现代化 UI 架构：Drawable 层规范与工程实践
 
 > 本文是 UI 架构系列的第二篇，建议先阅读 [第一篇：三层颜色体系与系统化设计方案](ui_architecture1.md) 了解核心设计理念。
 

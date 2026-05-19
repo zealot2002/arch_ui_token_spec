@@ -1,4 +1,4 @@
-# 现代化 UI 架构：Style 层如何系统性消除代码冗余
+# Modern UI Architecture (Part 3): The Style Layer and Eliminating Redundancy — 现代化 UI 架构：Style 层如何系统性消除代码冗余
 
 > 本文是 UI 架构系列的第三篇，建议先阅读 [第一篇：三层颜色体系与系统化设计方案](ui_architecture1.md)、[第二篇：Drawable 层规范与工程实践](ui_architecture2.md) 了解核心设计理念。
 

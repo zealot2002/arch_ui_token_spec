@@ -1,4 +1,4 @@
-# 现代化 UI 架构：三层颜色体系与系统化设计方案
+# Modern UI Architecture (Part 1): Three-Layer Color System — 现代化 UI 架构：三层颜色体系与系统化设计方案
 
 > 本文是 **UI 架构系列** 的第一篇，将深入探讨颜色层的设计。后续文章将依次介绍：
 > - [第二篇：Drawable 层规范与工程实践](ui_architecture2.md)

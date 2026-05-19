@@ -14,24 +14,7 @@
 
 ## 架构概览
 
-```mermaid
-flowchart TB
-    subgraph APP["上层应用层"]
-        direction LR
-        DRAW["Drawable 层<br/>sel_* 状态选择器 · bg_* 静态背景"]
-        STYLE["Style 层<br/>tv_* 文字样式 · Btn.* 按钮样式"]
-    end
-
-    subgraph CORE["三层颜色架构"]
-        direction TB
-        L3["Layer 3 功能色层 func_*<br/>命名：func_色系_职能_档位"]
-        L2["Layer 2 主题适配层 t_*<br/>命名：t_色系_数字"]
-        L1["Layer 1 全局基础色层<br/>命名：色系_数字"]
-    end
-
-    APP --> L3
-    L3 --> L2 --> L1
-```
+![UI 资源架构全景](screenshot/mermaid-diagram.png)
 
 | 层级 | 职责 | 典型命名 |
 |------|------|----------|
@@ -59,7 +42,7 @@ flowchart TB
 ```
 arch_ui_token_spec/
 ├── doc/                          # 架构系列文档
-├── screenshot/                   # 日间/夜间运行截图
+├── screenshot/                   # 架构图、日间/夜间运行截图
 └── app/src/main/res/
     ├── values/
     │   ├── colors_primitives.xml   # Layer 1：基础色

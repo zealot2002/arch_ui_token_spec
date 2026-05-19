@@ -84,7 +84,7 @@ flowchart TB
         S2["引用 func_* 填色，禁止硬编码色值"]
     end
 
-    subgraph COLOR["颜色层 · 设计师维护"]
+    subgraph COLOR["颜色层"]
         COL1["func_* 功能色 token"]
         COL2["经 t_* 支持日夜间自动切换"]
     end

@@ -51,7 +51,22 @@ flowchart TB
 需要说明的是，本仓库中的 demo 仅作为**抛砖引玉**：
 - **颜色覆盖**：只实现了常用 token 子集；矩阵补全、新增档位均由**设计师**在资源文件中维护，研发不自行扩展
 - **Drawable 资源**：仅实现了按钮、输入框等基础组件的状态，实际项目会更复杂
-- **组件覆盖**：demo 只展示了文字和按钮，实际还需要扩展到卡片、列表、弹窗等
+- **组件覆盖**：demo 覆盖常用 token 子集（表面层级、填充/渐变、按钮形态与禁用态等），列表、弹窗等复杂场景仍需按产品扩展
+
+### 1.3 Demo 运行效果（日间 / 夜间）
+
+仓库内置 [**Token 样例**](https://github.com/zealot2002/arch_ui_token_spec/blob/main/app/src/main/res/layout/activity_token_showcase.xml) 页（`activity_token_showcase`），用于对照资源命名与真机效果：右上角切换深浅色后，**同一套** `func_*` / Drawable / Style **无需改代码**，仅由 `values-night` 中 `t_*` 映射驱动换肤。
+
+| 日间 | 夜间 |
+|:---:|:---:|
+| ![日间 Token 样例](https://raw.githubusercontent.com/zealot2002/arch_ui_token_spec/main/screenshot/day.png) | ![夜间 Token 样例](https://raw.githubusercontent.com/zealot2002/arch_ui_token_spec/main/screenshot/night.png) |
+
+GitHub 预览（可点击查看原图）：
+
+- 日间：[screenshot/day.png](https://github.com/zealot2002/arch_ui_token_spec/blob/main/screenshot/day.png)
+- 夜间：[screenshot/night.png](https://github.com/zealot2002/arch_ui_token_spec/blob/main/screenshot/night.png)
+
+*左：`values` 日间映射；右：`values-night` 覆写 `t_*` 后的同一页面。*
 
 这套架构的真正价值在于**方法论**，而非具体实现。
 

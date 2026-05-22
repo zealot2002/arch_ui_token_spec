@@ -60,25 +60,6 @@ arch_ui_token_spec/
     └── layout/
         └── activity_token_showcase.xml
 ```
-
-## 快速开始
-
-### 环境要求
-
-- Android Studio（推荐最新稳定版）
-- JDK 11+
-- Android SDK（`compileSdk` 36，`minSdk` 16）
-
-### 构建与安装
-
-```bash
-./gradlew installDebug
-```
-
-或在 Android Studio 中打开工程，运行 `app` 模块。
-
-启动后进入 Token 样例页；点击右上角浮动按钮即可在日间/夜间模式间切换。
-
 ## 关于本 Demo
 
 本仓库的 Android 工程是**抛砖引玉的参考实现**，价值在于方法论而非覆盖全部业务场景：
